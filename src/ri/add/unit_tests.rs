@@ -1,6 +1,6 @@
 #![allow(clippy::equatable_if_let, clippy::unwrap_used)]
 
-use super::*;
+use crate::ri::*;
 use assert2::assert;
 
 // TODO: Many test cases represent compilation failures.  Figure out how to meaningfully test for compilation failure.
