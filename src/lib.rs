@@ -38,10 +38,7 @@
 
 mod consts;
 mod error;
-mod ranged_inclusive;
+mod ri;
 
 pub use error::{ErrInt, ErrIntPrimIntExt, Error, Result};
-pub use ranged_inclusive::{
-    RangedInclusiveI128, RangedInclusiveI16, RangedInclusiveI32, RangedInclusiveI64, RangedInclusiveI8,
-    RangedInclusiveU128, RangedInclusiveU16, RangedInclusiveU32, RangedInclusiveU64, RangedInclusiveU8,
-};
+pub use ri::{RiI128, RiI16, RiI32, RiI64, RiI8, RiU128, RiU16, RiU32, RiU64, RiU8};
