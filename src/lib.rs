@@ -1,3 +1,12 @@
+#![feature(
+    adt_const_params,
+    const_refs_to_cell,
+    const_fn_trait_bound,
+    const_num_from_num,
+    const_option,
+    const_trait_impl,
+    const_type_id
+)]
 #![warn(clippy::all, clippy::nursery, clippy::pedantic, rust_2018_idioms)]
 // Safety-critical application lints
 #![deny(
@@ -13,7 +22,8 @@
     clippy::match_bool,
     clippy::missing_errors_doc,
     clippy::module_name_repetitions,
-    clippy::wildcard_imports
+    clippy::wildcard_imports,
+    incomplete_features
 )]
 // To use the `unsafe` keyword, do not remove the `unsafe_code` attribute entirely.
 // Instead, change it to `#![allow(unsafe_code)]` or preferably `#![deny(unsafe_code)]` + opt-in
@@ -28,4 +38,10 @@
 
 mod consts;
 mod error;
-pub use error::{Error, Result};
+mod ranged_inclusive;
+
+pub use error::{ErrInt, ErrIntPrimIntExt, Error, Result};
+pub use ranged_inclusive::{
+    RangedInclusiveI128, RangedInclusiveI16, RangedInclusiveI32, RangedInclusiveI64, RangedInclusiveI8,
+    RangedInclusiveU128, RangedInclusiveU16, RangedInclusiveU32, RangedInclusiveU64, RangedInclusiveU8,
+};

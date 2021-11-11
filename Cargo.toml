@@ -2,16 +2,17 @@
 authors = ["U007D <curly@humanenginuity.com>"]
 categories = []
 description = "<describe crate here>"
-edition = "2018"
+edition = "2021"
 keywords = []
 license = "MIT OR Apache-2.0"
-name = "range"
+name = "ranged"
 readme = "README.md"
-repository = "https://github.com/u007d/range"
+repository = "https://github.com/u007d/ranged"
 version = "0.1.0"
 
 [dependencies]
 thiserror = "1.0.26"
+num-traits = { git = "https://github.com/u007d/num-traits", features = ["const_conversion"] }
 
 [dev-dependencies]
 assert2 = "0.3.6"

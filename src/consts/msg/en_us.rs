@@ -1,1 +1,5 @@
-pub const SAMPLE_ERROR: &str = "Error: This is a sample error";
+pub const ERR_INVALID_RANGE_INCLUSIVE_BOUNDS: &str =
+    "Error: Invalid (inclusive) range bounds.  (`START` must be <= `END`)";
+pub const ERR_VALUE_OUT_OF_INCLUSIVE_BOUNDS: &str =
+    "Error: Value outside of (inclusive) range bounds. (`START` must be <= `value` <= `END`)";
+pub const DOES_NOT_CONTAIN: &str = "does not contain";
