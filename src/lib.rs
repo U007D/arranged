@@ -5,8 +5,10 @@
     const_num_from_num,
     const_option,
     const_trait_impl,
-    const_type_id
+    const_type_id,
+    generic_const_exprs
 )]
+#![feature(unchecked_math)]
 #![warn(clippy::all, clippy::nursery, clippy::pedantic, rust_2018_idioms)]
 // Safety-critical application lints
 #![deny(
@@ -28,7 +30,7 @@
 // To use the `unsafe` keyword, do not remove the `unsafe_code` attribute entirely.
 // Instead, change it to `#![allow(unsafe_code)]` or preferably `#![deny(unsafe_code)]` + opt-in
 // with local `#[allow(unsafe_code)]`'s on a case-by-case basis, if practical.
-#![forbid(unsafe_code)]
+#![deny(unsafe_code)]
 #![forbid(bare_trait_objects)]
 // Uncomment before ship to reconcile use of possibly redundant crates, debug remnants, missing
 // license files and more
