@@ -1,5 +1,3 @@
-use crate::{ErrIntPrimIntExt, Error, Result};
-
 macro_rules! impl_ranged_inclusive {
     ($($SrcTL:ident $SrcTU:ident),+) => {
         $(
@@ -11,13 +9,15 @@ macro_rules! impl_ranged_inclusive {
             impl<const START: $SrcTL, const END: $SrcTL> $SrcTU<START, END> {
                 const _INVARIANT_START_LE_END: () = assert!(START <= END);
 
+                /// Constructor
+                /// Returns `Some(Self)` when `value` is within bounds or `None` otherwise.
                 // Suppress false positive 'associated function is never used: `new`'
                 #[allow(dead_code)]
-                pub const fn new(value: $SrcTL) -> Result<Self> {
+                #[must_use]
+                pub const fn from_value(value: $SrcTL) -> Option<Self> {
                     match START <= value && END >= value {
-                        true => Ok(Self { value }),
-                        false => Err(Error::ValueOutOfInclusiveBounds(START.to_err_int(),
-                            END.to_err_int(), value.to_err_int())),
+                        true => Some(Self { value }),
+                        false => None,
                     }
                 }
             }
