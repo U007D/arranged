@@ -1,12 +1,13 @@
 #![feature(
-    adt_const_params,
-    const_refs_to_cell,
-    const_fn_trait_bound,
-    const_num_from_num,
-    const_option,
-    const_trait_impl,
-    const_type_id,
-    generic_const_exprs
+adt_const_params,
+const_refs_to_cell,
+const_fn_trait_bound,
+const_num_from_num,
+const_option,
+const_trait_impl,
+const_type_id,
+generic_associated_types,
+generic_const_exprs
 )]
 #![feature(unchecked_math)]
 #![warn(clippy::all, clippy::nursery, clippy::pedantic, rust_2018_idioms)]
@@ -40,7 +41,10 @@
 
 mod consts;
 mod error;
-mod ri;
+pub mod ranges;
+mod ranges;
+mod traits;
+mod ranged;
 
 pub use error::{ErrInt, ErrIntPrimIntExt, Error, Result};
-pub use ri::{RiI128, RiI16, RiI32, RiI64, RiI8, RiU128, RiU16, RiU32, RiU64, RiU8};
+pub use ranges::{RiI128, RiI16, RiI32, RiI64, RiI8, RiU128, RiU16, RiU32, RiU64, RiU8};
