@@ -1,13 +1,14 @@
 #![feature(
-const_refs_to_cell,
-const_fn_trait_bound,
-const_num_from_num,
-const_option,
-const_trait_impl,
-const_type_id,
-generic_associated_types,
-step_trait,
-unchecked_math
+    const_convert,
+    const_refs_to_cell,
+    const_fn_trait_bound,
+    const_num_from_num,
+    const_option,
+    const_trait_impl,
+    const_type_id,
+    generic_associated_types,
+    step_trait,
+    unchecked_math
 )]
 #![warn(clippy::all, clippy::nursery, clippy::pedantic, rust_2018_idioms)]
 // Safety-critical application lints
@@ -24,7 +25,7 @@ unchecked_math
     clippy::match_bool,
     clippy::missing_errors_doc,
     clippy::module_name_repetitions,
-clippy::wildcard_imports
+    clippy::wildcard_imports
 )]
 // To use the `unsafe` keyword, do not remove the `unsafe_code` attribute entirely.
 // Instead, change it to `#![allow(unsafe_code)]` or preferably `#![deny(unsafe_code)]` + opt-in
@@ -39,9 +40,10 @@ clippy::wildcard_imports
 
 mod consts;
 mod error;
-mod ranges;
+mod range;
+mod ranged;
 mod traits;
-// mod ranged;
 
+pub use crate::ranged::Ranged;
 pub use error::{ErrInt, ErrIntPrimIntExt, Error, Result};
-// pub use ranges::{RiI128, RiI16, RiI32, RiI64, RiI8, RiU128, RiU16, RiU32, RiU64, RiU8};
+pub use range::{RiI128, RiI16, RiI32, RiI64, RiI8, RiU128, RiU16, RiU32, RiU64, RiU8};

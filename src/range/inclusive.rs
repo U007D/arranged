@@ -1,8 +1,6 @@
-// mod add;
 mod into_iter_ri;
-// mod sub;
-// #[cfg(test)]
-// mod unit_tests;
+#[cfg(test)]
+mod unit_tests;
 
 use crate::traits::{IRange, IRangeFinite, IRangeFrom, IRangeLen, IRangeTo, IRangeToInclusive, ITyEq};
 use into_iter_ri::IntoIterRi;
@@ -28,19 +26,19 @@ macro_rules! impl_range_inclusive {
                 type IntoIter = IntoIterRi<$ValueType>;
                 type Item = $ValueType;
 
-                fn into_iter(self) -> <Self as IntoIterator>::IntoIter { Self::IntoIter { range: START..=END } }
+                fn into_iter(self) -> IntoIterRi<$ValueType> { IntoIterRi::<$ValueType> { range: START..=END } }
             }
 
-            impl<const START: $ValueType, const END: $ValueType> IRange for $RangeName<START, END> {
+            impl<const START: $ValueType, const END: $ValueType> const IRange for $RangeName<START, END> {
                 type ValueType = $ValueType;
 
-                fn contains(value: Self::ValueType) -> bool { value >= START && value <= END }
+                fn contains(value: &Self::ValueType) -> bool { *value >= START && *value <= END }
             }
 
             impl<const START: $ValueType, const END: $ValueType> IRangeFinite for $RangeName<START, END> {}
 
             impl<const START: $ValueType, const END: $ValueType> const IRangeFrom for $RangeName<START, END> {
-                fn start(&self) -> &<Self as IRange>::ValueType { &START }
+                fn start() -> <Self as IRange>::ValueType { START }
             }
 
             #[allow(clippy::useless_transmute)]
@@ -86,7 +84,7 @@ macro_rules! impl_range_inclusive {
             }
 
             impl<const START: $ValueType, const END: $ValueType> const IRangeTo for $RangeName<START, END> {
-                fn end(&self) -> &<Self as IRange>::ValueType { &END }
+                fn end() -> <Self as IRange>::ValueType { END }
             }
 
             impl<const START: $ValueType, const END: $ValueType> IRangeToInclusive for $RangeName<START, END> {}
