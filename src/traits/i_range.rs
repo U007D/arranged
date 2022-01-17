@@ -16,14 +16,12 @@ pub trait IRangeTo: IRange {
     fn end() -> <Self as IRange>::ValueType;
 }
 
-pub trait IRangeFinite: IRange + IRangeFrom + IRangeTo {}
-
-pub trait IRangeToInclusive: IRangeFinite {}
-
-pub trait IRangeLen<TValue>: IRange + IRangeFrom + IRangeTo
+pub trait IRangeFinite<TValue>: IRange + IRangeFrom + IRangeTo
 where
     (TValue, <Self as IRange>::ValueType): ITyEq,
     TValue: SaturatingSub, {
     fn is_empty(&self) -> bool;
     fn len(&self) -> Option<usize>;
 }
+
+pub trait IRangeToInclusive: IRangeTo {}

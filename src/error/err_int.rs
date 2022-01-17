@@ -8,7 +8,7 @@ pub use unsigned::Unsigned;
 
 // This type allows any primitive integer type to be included as payload with `Error` types carrying integer values,
 // without having to make the `Error` type generic (which has viral ergonomic issues) or with `Box`ing (which requires
-// heap allocation, which may not be compatible with `no_std` environments.
+// heap allocation and may not be compatible with `no_std` environments.
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum ErrInt {
     Signed(Signed),
@@ -22,6 +22,12 @@ macro_rules! impl_from_for_err_int {
                 impl const ErrIntPrimIntExt for $SrcTL {
                     fn to_err_int(self) -> ErrInt {
                         ErrInt::$Signed($Signed::$SrcTU(self))
+                    }
+                }
+
+                impl const From<$SrcTL> for ErrInt {
+                    fn from(src: $SrcTL) -> Self {
+                        src.to_err_int()
                     }
                 }
             )+

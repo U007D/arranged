@@ -4,7 +4,7 @@ use super::*;
 use assert2::assert;
 
 #[test]
-const fn range_const_evaluates_contains_in_bounds_value() {
+const fn const_range_contains_in_bounds_value() {
     // Given
     const MIN_CPU_HZ: u64 = 350_000_000;
     const MAX_CPU_HZ: u64 = 1_400_000_000;
@@ -18,11 +18,13 @@ const fn range_const_evaluates_contains_in_bounds_value() {
     const RESULT: bool = Sut::contains(&FREQ);
 
     // Then
+    // Uncomment below and set `assert` to failing condition to observe compile-time impact
+    // const _ASSERT: () = std::assert!(RESULT == EXPECTED);
     std::assert!(RESULT == EXPECTED);
 }
 
 #[test]
-const fn range_const_evaluates_does_not_contain_low_out_of_bounds_value() {
+const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
     const MIN_CPU_HZ: u64 = 350_000_000;
     const MAX_CPU_HZ: u64 = 1_400_000_000;
@@ -40,7 +42,7 @@ const fn range_const_evaluates_does_not_contain_low_out_of_bounds_value() {
 }
 
 #[test]
-const fn range_const_evaluates_does_not_contain_high_out_of_bounds_value() {
+const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
     const MIN_CPU_HZ: u64 = 1_400_000_001;
     const MAX_CPU_HZ: u64 = 1_400_000_000;
