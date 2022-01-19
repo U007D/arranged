@@ -5,9 +5,9 @@ description = "<describe crate here>"
 edition = "2021"
 keywords = []
 license = "MIT OR Apache-2.0"
-name = "ranged"
+name = "aranged"
 readme = "README.md"
-repository = "https://github.com/u007d/ranged"
+repository = "https://github.com/u007d/aranged"
 version = "0.1.0"
 
 [dependencies]
