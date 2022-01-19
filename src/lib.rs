@@ -1,9 +1,11 @@
 #![feature(
     const_convert,
     const_refs_to_cell,
+    const_fn_fn_ptr_basics,
     const_fn_trait_bound,
     const_num_from_num,
     const_option,
+    const_precise_live_drops,
     const_trait_impl,
     const_type_id,
     generic_associated_types,

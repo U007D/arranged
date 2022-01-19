@@ -15,7 +15,7 @@ where
 impl<TRange> Ranged<TRange>
 where
     TRange: IRange + IRangeFrom + IRangeToInclusive,
-    ErrInt: From<<TRange as IRange>::ValueType>,
+    ErrInt: From<TRange::ValueType>,
 {
     /// Constructor
     /// This constructor is intended to be called from `const` context.  This way, if the value passed in is
@@ -29,17 +29,21 @@ where
     ///     * fails to compile if `value` is `const` (or a literal), or
     ///     * panics at runtime if `value` is not `const` (prefer `try_from()` constructor instead).
     #[must_use]
-    pub const fn new(value: TRange::ValueType) -> Self
+    pub const fn from(value: TRange::ValueType) -> Self
     where
         TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
-        assert!(TRange::contains(&value), "{}", msg::ERR_VALUE_OUT_OF_INCLUSIVE_BOUNDS);
-        Self(value)
+        #[allow(clippy::match_wild_err_arm)]
+        // TODO: Replace with `const` `expect()` once it exists
+        match Self::try_from(value) {
+            Ok(instance) => instance,
+            // TODO: Note loss of `err` context; restore when `const` `format!` or other solution is found
+            Err(_err) => panic!("{}", msg::ERR_VALUE_OUT_OF_INCLUSIVE_BOUNDS),
+        }
     }
 
     /// Constructor
     /// Returns `Some(Self)` when `value` is within bounds or `None` otherwise.
-    // Suppress false positive 'associated function is never used'
-    pub const fn try_new(value: TRange::ValueType) -> Result<Self>
+    pub const fn try_from(value: TRange::ValueType) -> Result<Self>
     where
         TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
         match TRange::contains(&value) {

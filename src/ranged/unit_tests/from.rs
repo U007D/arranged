@@ -17,7 +17,7 @@ const fn const_ranged_contains_in_bounds_value() {
     const EXPECTED_VALUE: u64 = FREQ;
 
     // When
-    const RESULT: Ranged<HzRange> = Ranged::<HzRange>::new(FREQ);
+    const RESULT: Ranged<HzRange> = Ranged::<HzRange>::from(FREQ);
 
     // Then
     // Uncomment below and set `assert` to failing condition to observe compile-time impact
