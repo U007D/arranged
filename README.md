@@ -1,4 +1,4 @@
-# range
+# aranged
 
 ## License
 Licensed under either:
