@@ -44,12 +44,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const MIN_CPU_HZ: u64 = 1_400_000_001;
+    const MIN_CPU_HZ: u64 = 350_000_000;
     const MAX_CPU_HZ: u64 = 1_400_000_000;
 
     type Sut = RiU64<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    const FREQ: u64 = 1_500_000_000;
+    const FREQ: u64 = 1_400_000_001;
     const EXPECTED: bool = false;
 
     // When

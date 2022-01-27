@@ -1,6 +1,5 @@
 use super::*;
 use crate::RiU64;
-use assert2::assert;
 
 #[allow(clippy::items_after_statements)]
 #[test]

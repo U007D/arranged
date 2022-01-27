@@ -2,7 +2,9 @@ use crate::traits::ITyEq;
 use num_traits::{Num, SaturatingSub};
 
 pub trait IRange {
+    const INVARIANTS: () = ();
     type ValueType: Num;
+
     fn contains(value: &Self::ValueType) -> bool
     where
         Self: Sized;

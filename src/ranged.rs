@@ -29,6 +29,7 @@ where
     ///     * fails to compile if `value` is `const` (or a literal), or
     ///     * panics at runtime if `value` is not `const` (prefer `try_from()` constructor instead).
     #[must_use]
+    #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn from(value: TRange::ValueType) -> Self
     where
         TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
@@ -43,9 +44,12 @@ where
 
     /// Constructor
     /// Returns `Some(Self)` when `value` is within bounds or `None` otherwise.
+    #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn try_from(value: TRange::ValueType) -> Result<Self>
     where
         TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
+        let _invariants = TRange::INVARIANTS;
+
         match TRange::contains(&value) {
             true => Ok(Self(value)),
             false => Err(Error::ValueOutOfInclusiveBounds(

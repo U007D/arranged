@@ -12,17 +12,13 @@ macro_rules! impl_range_inclusive {
             #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
             pub struct $RangeName<const START: $ValueType, const END: $ValueType>;
 
-            impl<const START: $ValueType, const END: $ValueType> $RangeName<START, END> {
-                const INVARIANT_START_LE_END: () = assert!(START <= END);
-            }
-
             /// Rust will evaluate (at compile-time) `consts` which it determines are in an execution path.  Even though
             /// `drop()` is not guaranteed to be run (e.g. if `$RangeName` is used only in a static context) the
             /// existence of this `Drop` impl is enough to trigger compile-time evaluation of the invariant, which has
             /// the effect of enforcing its contract at compile-time.
             impl<const START: $ValueType, const END: $ValueType> Drop for $RangeName<START, END> {
                 #[allow(clippy::let_unit_value)]
-                fn drop(&mut self) { let () = Self::INVARIANT_START_LE_END; }
+                fn drop(&mut self) { let _invariants = Self::INVARIANTS; }
             }
 
             impl<const START: $ValueType, const END: $ValueType> IntoIterator for $RangeName<START, END> {
@@ -33,6 +29,7 @@ macro_rules! impl_range_inclusive {
             }
 
             impl<const START: $ValueType, const END: $ValueType> const IRange for $RangeName<START, END> {
+                const INVARIANTS: () = assert!(START <= END);
                 type ValueType = $ValueType;
 
                 fn contains(value: &Self::ValueType) -> bool { *value >= START && *value <= END }
