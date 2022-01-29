@@ -16,6 +16,10 @@ macro_rules! impl_range_inclusive {
             /// `drop()` is not guaranteed to be run (e.g. if `$RangeName` is used only in a static context) the
             /// existence of this `Drop` impl is enough to trigger compile-time evaluation of the invariant, which has
             /// the effect of enforcing its contract at compile-time.
+            // TODO: When this invariant is violated, the compiler will report that it *has* been broken, but will not
+            //       reveal *where* the violation occurred.  Look for alternative invariant enforcement schemes with
+            //       better debug experiences (note: the `Ri*` types are designed to be useful without any methods being
+            //       called).
             impl<const START: $ValueType, const END: $ValueType> Drop for $RangeName<START, END> {
                 #[allow(clippy::let_unit_value)]
                 fn drop(&mut self) { let _invariants = Self::INVARIANTS; }
@@ -49,17 +53,18 @@ macro_rules! impl_range_inclusive {
                 #[inline(always)]
                 fn is_empty(&self) -> bool { false }
 
-                /// Compute magnitude of `START..=END` span.  Note that this difference may overflow when `START`,
-                /// `END` are signed and thus typically the computed difference is also a signed value.  In such a case,
-                /// `SignedType::MAX` - `SignedType::MIN` will overflow `SignedType`.
+                /// Compute magnitude of `START..=END` span.  Note that this difference may overflow if `START`, `END`
+                /// are signed types (and thus typically the computed difference is also signed).  In such a case, the
+                /// difference could overflow `SignedType` (e.g. `SignedType::MAX` - `SignedType::MIN` will overflow
+                /// `SignedType`).
                 ///
-                /// To avoid this situation, this algorithm leverages twos-complement arithmetic to perform a signed
-                /// difference computation yielding an *unsigned* result, which can no longer overflow.
+                /// To avoid this situation, this algorithm leverages (`unsafe` aka "manually-verified-to-be-correct")
+                /// twos-complement arithmetic to perform a signed difference computation yielding an *unsigned* result,
+                /// which can no longer overflow.
                 ///
-                /// The magnitude is then increased by one (since this range is inclusive of `END`), which *could*
-                /// overflow the return type when
-                /// `size_of_val(&START)` or `size_of_val(&END)` `>=` `size_of::<usize>()` and the span is very large.
-                /// This is why this function returns `Option` where the value of `None` represents overflow.
+                /// Then the result is increased by one (since `Ri*` is inclusive of `END`), which *could* overflow the
+                /// return type when `size_of_val(&START)` or `size_of_val(&END)` `>=` `size_of::<usize>()` and the span
+                /// is very large.  This function returns `Option` where a value of `None` represents this overflow.
                 #[allow(unsafe_code)]
                 fn len(&self) -> Option<usize> {
                     let offset = unsafe { transmute::<$ValueType, $UnsignedValueType>($ValueType::MIN) };
