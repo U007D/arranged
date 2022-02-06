@@ -17,7 +17,7 @@ contracts = "0.6.2"
 
 [dev-dependencies]
 assert2 = "0.3.6"
-trybuild = "1.0.45"
+trybuild = { path = "/Users/sergibli/Development/3rd_party/dtolnay/trybuild" }
 
 [profile.dev]
 codegen-units = 1

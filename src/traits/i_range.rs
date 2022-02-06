@@ -10,20 +10,25 @@ pub trait IRange {
         Self: Sized;
 }
 
-pub trait IRangeFrom: IRange + IntoIterator<Item = <Self as IRange>::ValueType> {
-    fn start() -> <Self as IRange>::ValueType;
-}
-
-pub trait IRangeTo: IRange {
-    fn end() -> <Self as IRange>::ValueType;
-}
-
 pub trait IRangeFinite<TValue>: IRange + IRangeFrom + IRangeTo
 where
     (TValue, <Self as IRange>::ValueType): ITyEq,
     TValue: SaturatingSub, {
-    fn is_empty(&self) -> bool;
-    fn len(&self) -> Option<usize>;
+    fn is_empty() -> bool;
+    fn len() -> Option<usize>;
+}
+
+pub trait IRangeFrom: IRange {
+    fn start() -> <Self as IRange>::ValueType;
+}
+
+pub trait IRangeIntoIterator: IRangeFrom + IntoIterator<Item = <Self as IRange>::ValueType> {
+    type IntoIter: Iterator;
+    fn into_iter() -> <Self as IRangeIntoIterator>::IntoIter;
+}
+
+pub trait IRangeTo: IRange {
+    fn end() -> <Self as IRange>::ValueType;
 }
 
 pub trait IRangeToInclusive: IRangeTo {}

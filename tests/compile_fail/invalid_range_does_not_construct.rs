@@ -1,7 +1,7 @@
-use arranged::RiI8;
+use arranged::RiU8;
 
 fn main() {
-    const MIN_BOUND: i8 = 43;
-    const MAX_BOUND: i8 = -43;
-    drop(RiI8::<MIN_BOUND, MAX_BOUND>);
+    const MIN_BOUND: u8 = 42;
+    const MAX_BOUND: u8 = 1;
+    drop(RiU8::<MIN_BOUND, MAX_BOUND>);
 }

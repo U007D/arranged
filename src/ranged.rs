@@ -24,13 +24,16 @@ where
     /// a way to *only* provide a (`const`) method at compile-time, thus, this function can also be called
     /// with a runtime value.  In such a case, it will panic if the provided value is out of bounds.
     ///
+    /// # Returns
+    /// `Self`, if `value` is within `TRange`'s range bounds.
+    ///
     /// # Panics
-    /// Returns `Self` when `value` is within bounds, otherwise:
+    /// If `value` is not within `TRange`'s range bounds:
     ///     * fails to compile if `value` is `const` (or a literal), or
     ///     * panics at runtime if `value` is not `const` (prefer `try_from()` constructor instead).
     #[must_use]
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
-    pub const fn from(value: TRange::ValueType) -> Self
+    pub const fn panicking_from(value: TRange::ValueType) -> Self
     where
         TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
         #[allow(clippy::match_wild_err_arm)]
@@ -43,6 +46,7 @@ where
     }
 
     /// Constructor
+    /// # Returns
     /// Returns `Some(Self)` when `value` is within bounds or `None` otherwise.
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn try_from(value: TRange::ValueType) -> Result<Self>
@@ -59,6 +63,20 @@ where
             )),
         }
     }
+
+    /// Constructor
+    /// For orthogonality with this type's other constructors, this constructor may be called from `const` context.
+    ///
+    /// # Returns
+    /// `Self`, unconditionally.
+    ///
+    /// # Safety
+    /// This constructor is `unsafe` because the value being passed in is not verified to be within the bounds of
+    /// `TRange`.  It is the caller's responsibility to ensure that this contract is upheld--violating it is Undefined
+    /// Behavior.
+    #[allow(unsafe_code)]
+    #[must_use]
+    pub const unsafe fn unchecked_from(value: TRange::ValueType) -> Self { Self(value) }
 }
 
 impl<TRange> const IRanged<TRange> for Ranged<TRange>

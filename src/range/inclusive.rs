@@ -2,7 +2,7 @@ mod into_iter_ri;
 #[cfg(test)]
 mod unit_tests;
 
-use crate::traits::{IRange, IRangeFinite, IRangeFrom, IRangeTo, IRangeToInclusive, ITyEq};
+use crate::traits::{IRange, IRangeFinite, IRangeFrom, IRangeIntoIterator, IRangeTo, IRangeToInclusive, ITyEq};
 use into_iter_ri::IntoIterRi;
 use std::mem::{size_of, transmute};
 
@@ -39,10 +39,6 @@ macro_rules! impl_range_inclusive {
                 fn contains(value: &Self::ValueType) -> bool { *value >= START && *value <= END }
             }
 
-            impl<const START: $ValueType, const END: $ValueType> const IRangeFrom for $RangeName<START, END> {
-                fn start() -> <Self as IRange>::ValueType { START }
-            }
-
             #[allow(clippy::useless_transmute)]
             impl<const START: $ValueType, const END: $ValueType> const IRangeFinite<$ValueType> for $RangeName<START, END>
             where
@@ -51,7 +47,7 @@ macro_rules! impl_range_inclusive {
                 // Inclusive range where `START <= END` can never be empty
                 #[allow(clippy::inline_always)]
                 #[inline(always)]
-                fn is_empty(&self) -> bool { false }
+                fn is_empty() -> bool { false }
 
                 /// Compute magnitude of `START..=END` span.  Note that this difference may overflow if `START`, `END`
                 /// are signed types (and thus typically the computed difference is also signed).  In such a case, the
@@ -66,7 +62,7 @@ macro_rules! impl_range_inclusive {
                 /// return type when `size_of_val(&START)` or `size_of_val(&END)` `>=` `size_of::<usize>()` and the span
                 /// is very large.  This function returns `Option` where a value of `None` represents this overflow.
                 #[allow(unsafe_code)]
-                fn len(&self) -> Option<usize> {
+                fn len() -> Option<usize> {
                     let offset = unsafe { transmute::<$ValueType, $UnsignedValueType>($ValueType::MIN) };
                     let u_start = unsafe { transmute::<$ValueType, $UnsignedValueType>(START) }.wrapping_add(offset);
                     let u_end = unsafe { transmute::<$ValueType, $UnsignedValueType>(END) }.wrapping_add(offset);
@@ -84,6 +80,18 @@ macro_rules! impl_range_inclusive {
                             false => None,
                         }
                     }
+                }
+            }
+
+            impl<const START: $ValueType, const END: $ValueType> const IRangeFrom for $RangeName<START, END> {
+                fn start() -> <Self as IRange>::ValueType { START }
+            }
+
+            impl<const START: $ValueType, const END: $ValueType> IRangeIntoIterator for $RangeName<START, END> {
+                type IntoIter = IntoIterRi<$ValueType>;
+
+                fn into_iter() -> <Self as IRangeIntoIterator>::IntoIter {
+                    IntoIterator::into_iter(Self)
                 }
             }
 

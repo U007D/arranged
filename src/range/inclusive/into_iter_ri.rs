@@ -1,17 +1,20 @@
+#[cfg(test)]
+mod unit_tests;
+
 use std::{iter::Step, ops::RangeInclusive};
 
 #[derive(Debug)]
-pub struct IntoIterRi<TValueType>
+pub struct IntoIterRi<TValue>
 where
-    TValueType: PartialOrd, {
-    pub(super) range: RangeInclusive<TValueType>,
+    TValue: PartialOrd, {
+    pub(super) range: RangeInclusive<TValue>,
 }
 
-impl<TValueType> Iterator for IntoIterRi<TValueType>
+impl<TValue> Iterator for IntoIterRi<TValue>
 where
-    TValueType: PartialOrd + Step,
+    TValue: PartialOrd + Step,
 {
-    type Item = TValueType;
+    type Item = TValue;
 
     fn next(&mut self) -> Option<Self::Item> { self.range.next() }
 }
