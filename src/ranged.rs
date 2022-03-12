@@ -1,3 +1,5 @@
+mod i_min_max;
+mod i_wrapping;
 #[cfg(test)]
 mod unit_tests;
 
@@ -33,7 +35,7 @@ where
     ///     * panics at runtime if `value` is not `const` (prefer `try_from()` constructor instead).
     #[must_use]
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
-    pub const fn panicking_from(value: TRange::ValueType) -> Self
+    pub const fn from(value: TRange::ValueType) -> Self
     where
         TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
         #[allow(clippy::match_wild_err_arm)]

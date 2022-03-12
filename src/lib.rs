@@ -1,8 +1,8 @@
 #![feature(
+    associated_type_bounds,
+    backtrace,
     const_convert,
     const_refs_to_cell,
-    const_fn_fn_ptr_basics,
-    const_fn_trait_bound,
     const_num_from_num,
     const_option,
     const_precise_live_drops,

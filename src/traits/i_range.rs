@@ -1,9 +1,12 @@
 use crate::traits::ITyEq;
+use arith_traits::IWrapping;
 use num_traits::{Num, SaturatingSub};
+use std::ops::Sub;
 
 pub trait IRange {
     const INVARIANTS: () = ();
-    type ValueType: Num;
+    type ValueType: Num + TryFrom<Self::WorkingValueType>;
+    type WorkingValueType: From<Self::ValueType> + Sub + IWrapping;
 
     fn contains(value: &Self::ValueType) -> bool
     where
