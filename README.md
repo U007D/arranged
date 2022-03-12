@@ -2,7 +2,7 @@
 
 **A** **R**ust **ranged** type library.
 
-Support for (machine-word-abstracting?) ranged types as zero or low-runtime overhead abstractions using safe and
+Support for (machine-word-abstracting? TBD) ranged types as zero or low-runtime overhead abstractions using safe and
 conventional arithmetic wrappers, written in Rust.
 
 Currently experimental.

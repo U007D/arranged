@@ -3,11 +3,13 @@ mod into_iter_ri;
 mod unit_tests;
 
 use crate::traits::{IRange, IRangeFinite, IRangeFrom, IRangeIntoIterator, IRangeTo, IRangeToInclusive, ITyEq};
+use arith_traits::IMinMax;
 use into_iter_ri::IntoIterRi;
+use num::{BigInt, BigUint};
 use std::mem::{size_of, transmute};
 
 macro_rules! impl_range_inclusive {
-    ($($ValueType:ident $UnsignedValueType:ident $RangeName:ident,)+) => {
+    ($($ValueType:ident $UnsignedValueType:ident $WorkingValueType:ident $RangeName:ident,)+) => {
         $(
             #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
             pub struct $RangeName<const START: $ValueType, const END: $ValueType>;
@@ -32,9 +34,16 @@ macro_rules! impl_range_inclusive {
                 fn into_iter(self) -> IntoIterRi<$ValueType> { IntoIterRi::<$ValueType> { range: START..=END } }
             }
 
+            impl<const START: $ValueType, const END: $ValueType> const IMinMax<$ValueType> for $RangeName<START, END> {
+                const MAX: $ValueType = END;
+                const MIN: $ValueType = START;
+            }
+
+
             impl<const START: $ValueType, const END: $ValueType> const IRange for $RangeName<START, END> {
                 const INVARIANTS: () = assert!(START <= END);
                 type ValueType = $ValueType;
+                type WorkingValueType = $WorkingValueType;
 
                 fn contains(value: &Self::ValueType) -> bool { *value >= START && *value <= END }
             }
@@ -105,16 +114,16 @@ macro_rules! impl_range_inclusive {
 }
 
 impl_range_inclusive!(
-    i8    u8    RiI8,
-    i16   u16   RiI16,
-    i32   u32   RiI32,
-    i64   u64   RiI64,
-    i128  u128  RiI128,
-    isize usize RiIsize,
-    u8    u8    RiU8,
-    u16   u16   RiU16,
-    u32   u32   RiU32,
-    u64   u64   RiU64,
-    u128  u128  RiU128,
-    usize usize RiUsize,
+    i8    u8    i16             RiI8,
+    i16   u16   i32             RiI16,
+    i32   u32   i64             RiI32,
+    i64   u64   i128            RiI64,
+    i128  u128  BigInt          RiI128,
+    isize usize BigInt          RiIsize,
+    u8    u8    u8              RiU8,
+    u16   u16   u16             RiU16,
+    u32   u32   u32             RiU32,
+    u64   u64   u64             RiU64,
+    u128  u128  BigUint         RiU128,
+    usize usize BigUint         RiUsize,
 );
