@@ -11,12 +11,12 @@ where
     Self: PartialOrd,
     TRange: IRangeFrom + IRangeToInclusive,
     TRange::ValueType: PartialOrd + IWrapping,
-    <TRange as IRange>::WorkingValueType: IWrapping<Output=<TRange as IRange>::WorkingValueType>
-    + Clone
-    + NumOps<<TRange as IRange>::WorkingValueType, <TRange as IRange>::WorkingValueType>
-    + One
-    + PartialOrd
-    + Zero,
+    <TRange as IRange>::WorkingValueType: IWrapping<Output = <TRange as IRange>::WorkingValueType>
+        + Clone
+        + NumOps<<TRange as IRange>::WorkingValueType, <TRange as IRange>::WorkingValueType>
+        + One
+        + PartialOrd
+        + Zero,
 {
     type Output = Self;
 
@@ -61,11 +61,11 @@ where
                 // `end - start` + 1 (required for inclusive `Range`) _could_ overflow, so `ValueType` has been promoted
                 // to `WorkingValueType` to ensure overflow cannot happen in this case either.
                 #[allow(clippy::integer_arithmetic)]
-                    let range_len = end.clone() - start.clone() + <TRange as IRange>::WorkingValueType::one();
+                let range_len = end.clone() - start.clone() + <TRange as IRange>::WorkingValueType::one();
 
                 // `abs_value > end` per `match` arm ensures that `abs_value - end` cannot overflow
                 #[allow(clippy::integer_arithmetic)]
-                    let overflow_magnitude = abs_value - end;
+                let overflow_magnitude = abs_value - end;
 
                 let range_offset = overflow_magnitude % range_len;
                 start + range_offset
@@ -102,9 +102,9 @@ where
 }
 
 impl<TRange> const IMinMax for Ranged<TRange>
-    where
-        Self: PartialOrd,
-        TRange: ~ const IRangeFrom + ~ const IRangeTo + ~ const IRangeToInclusive,
+where
+    Self: PartialOrd,
+    TRange: ~const IRangeFrom + ~const IRangeTo + ~const IRangeToInclusive,
 {
     const MAX: Self = Self(TRange::end());
     const MIN: Self = Self(TRange::start());

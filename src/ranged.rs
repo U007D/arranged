@@ -35,8 +35,8 @@ where
     #[must_use]
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn from(value: TRange::ValueType) -> Self
-        where
-            TRange: ~ const IRange + ~ const IRangeFrom + ~ const IRangeTo, {
+    where
+        TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
         #[allow(clippy::match_wild_err_arm)]
         // TODO: Replace with `const` `expect()` once it exists
         match Self::try_from(value) {

@@ -1,16 +1,16 @@
 #![feature(
-associated_type_bounds,
-backtrace,
-const_convert,
-const_refs_to_cell,
-const_num_from_num,
-const_option,
-const_precise_live_drops,
-const_trait_impl,
-const_type_id,
-generic_associated_types,
-step_trait,
-unchecked_math
+    associated_type_bounds,
+    backtrace,
+    const_convert,
+    const_refs_to_cell,
+    const_num_from_num,
+    const_option,
+    const_precise_live_drops,
+    const_trait_impl,
+    const_type_id,
+    generic_associated_types,
+    step_trait,
+    unchecked_math
 )]
 #![warn(clippy::all, clippy::nursery, clippy::pedantic, rust_2018_idioms)]
 // Safety-critical application lints
