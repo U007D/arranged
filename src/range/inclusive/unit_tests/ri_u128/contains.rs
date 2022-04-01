@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u128;
-type Range<const START: ValueType, const END: ValueType> = RiU128<START, END>;
+type Range<const START: u128, const END: u128> = RiU128<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    const MEAN: ValueType = 550_000_000_000_000_000_000_000;
+    const MEAN: u128 = 550_000_000_000_000_000_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    const LOW: ValueType = 100_000_000_000_000_000_000_000;
+    const LOW: u128 = 100_000_000_000_000_000_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    const HIGH: ValueType = 1_000_000_000_000_000_000_000_000;
+    const HIGH: u128 = 1_000_000_000_000_000_000_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -67,12 +66,12 @@ const fn const_range_contains_max_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    const MEAN: ValueType = 99_999_999_999_999_999_999_999;
+    const MEAN: u128 = 99_999_999_999_999_999_999_999;
     const EXPECTED: bool = false;
 
     // When
@@ -87,12 +86,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    const MEAN: ValueType = 1_000_000_000_000_000_000_000_001;
+    const MEAN: u128 = 1_000_000_000_000_000_000_000_001;
     const EXPECTED: bool = false;
 
     // When
@@ -107,12 +106,12 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    let mean: ValueType = 550_000_000_000_000_000_000_000;
+    let mean: u128 = 550_000_000_000_000_000_000_000;
     let expected = true;
 
     // When
@@ -125,12 +124,12 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    let low: ValueType = 100_000_000_000_000_000_000_000;
+    let low: u128 = 100_000_000_000_000_000_000_000;
     let expected = true;
 
     // When
@@ -143,12 +142,12 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    let high: ValueType = 1_000_000_000_000_000_000_000_000;
+    let high: u128 = 1_000_000_000_000_000_000_000_000;
     let expected = true;
 
     // When
@@ -161,12 +160,12 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    let mean: ValueType = 99_999_999_999_999_999_999_999;
+    let mean: u128 = 99_999_999_999_999_999_999_999;
     let expected = false;
 
     // When
@@ -179,12 +178,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 
-    let mean: ValueType = 1_000_000_000_000_000_000_000_001;
+    let mean: u128 = 1_000_000_000_000_000_000_000_001;
     let expected = false;
 
     // When

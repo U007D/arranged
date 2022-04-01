@@ -1,6 +1,6 @@
 # arranged
 
-**A** **R**ust **ranged** type library.
+**A** **R**ust **ranged**-type library.
 
 Support for (machine-word-abstracting? TBD) ranged types as zero or low-runtime overhead abstractions using safe and
 conventional arithmetic wrappers, written in Rust.
@@ -10,7 +10,7 @@ Currently experimental.
 ## Usage
 
 ```rust
-// Create a `u8`-based ranged type limited to (`RangeInclusive`) `1..=100`, set to the value 42
+// Create a `u8`-based `RangeInclusive`-style type limited to `1..=100`, set to the value 42
 let my_ranged_value = Ranged::<RiU8<1, 100>>::from(42);
 ```
 

@@ -21,7 +21,7 @@ fn range_with_nonnegative_start_and_end_returns_original_value() {
 #[test]
 fn range_with_nonnegative_start_and_end_with_minimum_value_returns_original_value() {
     // Given
-    type ZeroToNineNinetyNine = RiU64::<0, 999>;
+    type ZeroToNineNinetyNine = RiU64<0, 999>;
     let value = 0;
     let sut = Ranged::<ZeroToNineNinetyNine>::from(value);
     let expected = Ranged::<ZeroToNineNinetyNine>::from(value);
@@ -36,7 +36,7 @@ fn range_with_nonnegative_start_and_end_with_minimum_value_returns_original_valu
 #[test]
 fn range_with_nonnegative_start_and_end_with_maximum_value_returns_original_value() {
     // Given
-    type OneToTen = RiU64::<1, 10>;
+    type OneToTen = RiU64<1, 10>;
     let value = 10;
     let sut = Ranged::<OneToTen>::from(value);
     let expected = Ranged::<OneToTen>::from(value);

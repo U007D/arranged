@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = i16;
-type Range<const START: ValueType, const END: ValueType> = RiI16<START, END>;
+type Range<const START: i16, const END: i16> = RiI16<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    const COMFORTABLE: ValueType = 20;
+    const COMFORTABLE: i16 = 20;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    const ANTARCTICA: ValueType = -100;
+    const ANTARCTICA: i16 = -100;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    const DEATH_VALLEY: ValueType = 50;
+    const DEATH_VALLEY: i16 = 50;
     const EXPECTED: bool = true;
 
     // When
@@ -66,12 +65,12 @@ const fn const_range_contains_max_bounds_value() {
 
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    const UNNATURALLY_COLD: ValueType = -200;
+    const UNNATURALLY_COLD: i16 = -200;
     const EXPECTED: bool = false;
 
     // When
@@ -86,12 +85,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    const UNNATURALLY_HOT: ValueType = 100;
+    const UNNATURALLY_HOT: i16 = 100;
     const EXPECTED: bool = false;
 
     // When
@@ -106,12 +105,12 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    let comfortable: ValueType = 20;
+    let comfortable: i16 = 20;
     let expected = true;
 
     // When
@@ -124,12 +123,12 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    let antarctica: ValueType = -100;
+    let antarctica: i16 = -100;
     let expected = true;
 
     // When
@@ -142,12 +141,12 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    let death_valley: ValueType = 50;
+    let death_valley: i16 = 50;
     let expected = true;
 
     // When
@@ -160,12 +159,12 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    let unnaturally_cold: ValueType = -200;
+    let unnaturally_cold: i16 = -200;
     let expected = false;
 
     // When
@@ -178,12 +177,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const COLDEST_ON_EARTH_IN_C: ValueType = -100;
-    const HOTTEST_ON_EARTH_IN_C: ValueType = 50;
+    const COLDEST_ON_EARTH_IN_C: i16 = -100;
+    const HOTTEST_ON_EARTH_IN_C: i16 = 50;
 
     type Sut = Range<COLDEST_ON_EARTH_IN_C, HOTTEST_ON_EARTH_IN_C>;
 
-    let unnaturally_hot: ValueType = 100;
+    let unnaturally_hot: i16 = 100;
     let expected = false;
 
     // When

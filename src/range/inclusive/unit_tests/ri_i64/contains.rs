@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = i64;
-type Range<const START: ValueType, const END: ValueType> = RiI64<START, END>;
+type Range<const START: i64, const END: i64> = RiI64<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
-    const CANADA: ValueType = -2_217_490_000_000;
+    const CANADA: i64 = -2_217_490_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
-    const US: ValueType = -30_000_000_000_000;
+    const US: i64 = -30_000_000_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
-    const WALLIS_AND_FUTUNA: ValueType = 0;
+    const WALLIS_AND_FUTUNA: i64 = 0;
     const EXPECTED: bool = true;
 
     // When
@@ -67,12 +66,12 @@ const fn const_range_contains_max_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
-    const MORE_DEBT_THAN_US: ValueType = -100_000_000_000_000;
+    const MORE_DEBT_THAN_US: i64 = -100_000_000_000_000;
     const EXPECTED: bool = false;
 
     // When
@@ -87,12 +86,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
-    const LESS_DEBT_THAN_WALLIS_AND_FUTUNA: ValueType = 1_000_000_000;
+    const LESS_DEBT_THAN_WALLIS_AND_FUTUNA: i64 = 1_000_000_000;
     const EXPECTED: bool = false;
 
     // When
@@ -107,8 +106,8 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
@@ -125,8 +124,8 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
@@ -143,8 +142,8 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
@@ -161,8 +160,8 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
@@ -179,12 +178,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const LARGEST_NATIONAL_DEBT_AS_ASSET: ValueType = -30_000_000_000_000;
-    const SMALLEST_NATIONAL_DEBT_AS_ASSET: ValueType = 0;
+    const LARGEST_NATIONAL_DEBT_AS_ASSET: i64 = -30_000_000_000_000;
+    const SMALLEST_NATIONAL_DEBT_AS_ASSET: i64 = 0;
 
     type Sut = Range<LARGEST_NATIONAL_DEBT_AS_ASSET, SMALLEST_NATIONAL_DEBT_AS_ASSET>;
 
-    let less_debt_than_wallis_and_futuna: ValueType = 1_000_000;
+    let less_debt_than_wallis_and_futuna: i64 = 1_000_000;
     let expected = false;
 
     // When

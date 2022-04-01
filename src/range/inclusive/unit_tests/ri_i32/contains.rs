@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = i32;
-type Range<const START: ValueType, const END: ValueType> = RiI32<START, END>;
+type Range<const START: i32, const END: i32> = RiI32<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    const AVERAGE_ELEVATION: ValueType = 800;
+    const AVERAGE_ELEVATION: i32 = 800;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    const CORE: ValueType = -4_000_000;
+    const CORE: i32 = -4_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    const KARMAN_LINE: ValueType = 100_000;
+    const KARMAN_LINE: i32 = 100_000;
     const EXPECTED: bool = true;
 
     // When
@@ -67,12 +66,12 @@ const fn const_range_contains_max_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    const DEEPER_THAN_CENTER: ValueType = 5_000_000;
+    const DEEPER_THAN_CENTER: i32 = 5_000_000;
     const EXPECTED: bool = false;
 
     // When
@@ -87,12 +86,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    const ABOVE_ATMOSPHERE: ValueType = 2_000_000;
+    const ABOVE_ATMOSPHERE: i32 = 2_000_000;
     const EXPECTED: bool = false;
 
     // When
@@ -107,12 +106,12 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    let average_elevation: ValueType = 800;
+    let average_elevation: i32 = 800;
     let expected = true;
 
     // When
@@ -125,12 +124,12 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    let core: ValueType = -4_000_000;
+    let core: i32 = -4_000_000;
     let expected = true;
 
     // When
@@ -143,12 +142,12 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    let karman_line: ValueType = 100_000;
+    let karman_line: i32 = 100_000;
     let expected = true;
 
     // When
@@ -161,12 +160,12 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    let beyond_center: ValueType = 5_000_000;
+    let beyond_center: i32 = 5_000_000;
     let expected = false;
 
     // When
@@ -179,12 +178,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const DEPTH_TO_CORE_IN_M: ValueType = -4_000_000;
-    const HEIGHT_TO_KARMAN_LINE_IN_M: ValueType = 100_000;
+    const DEPTH_TO_CORE_IN_M: i32 = -4_000_000;
+    const HEIGHT_TO_KARMAN_LINE_IN_M: i32 = 100_000;
 
     type Sut = Range<DEPTH_TO_CORE_IN_M, HEIGHT_TO_KARMAN_LINE_IN_M>;
 
-    let above_atmosphere: ValueType = 2_000_000;
+    let above_atmosphere: i32 = 2_000_000;
     let expected = false;
 
     // When

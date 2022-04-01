@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = i128;
-type Range<const START: ValueType, const END: ValueType> = RiI128<START, END>;
+type Range<const START: i128, const END: i128> = RiI128<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    const NEUTRON: ValueType = 0;
+    const NEUTRON: i128 = 0;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    const ELECTRON: ValueType = -16_020_000_000_000_000_000;
+    const ELECTRON: i128 = -16_020_000_000_000_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    const PROTON: ValueType = 16_020_000_000_000_000_000;
+    const PROTON: i128 = 16_020_000_000_000_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -67,12 +66,12 @@ const fn const_range_contains_max_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    const SUPER_NEGATIVE_CHARGE: ValueType = -32_040_000_000_000_000_000;
+    const SUPER_NEGATIVE_CHARGE: i128 = -32_040_000_000_000_000_000;
     const EXPECTED: bool = false;
 
     // When
@@ -87,12 +86,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    const SUPER_POSITIVE_CHARGE: ValueType = 32_040_000_000_000_000_000;
+    const SUPER_POSITIVE_CHARGE: i128 = 32_040_000_000_000_000_000;
     const EXPECTED: bool = false;
 
     // When
@@ -107,12 +106,12 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    let neutron: ValueType = 0;
+    let neutron: i128 = 0;
     let expected = true;
 
     // When
@@ -125,12 +124,12 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    let electron: ValueType = -16_020_000_000_000_000_000;
+    let electron: i128 = -16_020_000_000_000_000_000;
     let expected = true;
 
     // When
@@ -143,12 +142,12 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    let proton: ValueType = 16_020_000_000_000_000_000;
+    let proton: i128 = 16_020_000_000_000_000_000;
     let expected = true;
 
     // When
@@ -161,12 +160,12 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    let super_negative_charge: ValueType = -32_040_000_000_000_000_000;
+    let super_negative_charge: i128 = -32_040_000_000_000_000_000;
     let expected = false;
 
     // When
@@ -179,12 +178,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: ValueType = -16_020_000_000_000_000_000;
-    const PROTON_CHARGE_IN_INVERSE_COULOMBS: ValueType = 16_020_000_000_000_000_000;
+    const ELECTRON_CHARGE_IN_INVERSE_COULOMBS: i128 = -16_020_000_000_000_000_000;
+    const PROTON_CHARGE_IN_INVERSE_COULOMBS: i128 = 16_020_000_000_000_000_000;
 
     type Sut = Range<ELECTRON_CHARGE_IN_INVERSE_COULOMBS, PROTON_CHARGE_IN_INVERSE_COULOMBS>;
 
-    let super_positive_charge: ValueType = 32_040_000_000_000_000_000;
+    let super_positive_charge: i128 = 32_040_000_000_000_000_000;
     let expected = false;
 
     // When

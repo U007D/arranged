@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u32;
-type Range<const START: ValueType, const END: ValueType> = RiU32<START, END>;
+type Range<const START: u32, const END: u32> = RiU32<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    const FREQ: ValueType = 1_000_000_000;
+    const FREQ: u32 = 1_000_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    const FREQ: ValueType = 350_000_000;
+    const FREQ: u32 = 350_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    const FREQ: ValueType = 1_400_000_000;
+    const FREQ: u32 = 1_400_000_000;
     const EXPECTED: bool = true;
 
     // When
@@ -67,12 +66,12 @@ const fn const_range_contains_max_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    const FREQ: ValueType = 349_999_999;
+    const FREQ: u32 = 349_999_999;
     const EXPECTED: bool = false;
 
     // When
@@ -87,12 +86,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    const FREQ: ValueType = 1_400_000_001;
+    const FREQ: u32 = 1_400_000_001;
     const EXPECTED: bool = false;
 
     // When
@@ -107,12 +106,12 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    let freq: ValueType = 1_000_000_000;
+    let freq: u32 = 1_000_000_000;
     let expected = true;
 
     // When
@@ -125,12 +124,12 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    let freq: ValueType = 350_000_000;
+    let freq: u32 = 350_000_000;
     let expected = true;
 
     // When
@@ -143,12 +142,12 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    let freq: ValueType = 1_400_000_000;
+    let freq: u32 = 1_400_000_000;
     let expected = true;
 
     // When
@@ -161,12 +160,12 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    let freq: ValueType = 349_999_999;
+    let freq: u32 = 349_999_999;
     let expected = false;
 
     // When
@@ -179,12 +178,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    let freq: ValueType = 1_400_000_001;
+    let freq: u32 = 1_400_000_001;
     let expected = false;
 
     // When

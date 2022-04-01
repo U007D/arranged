@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u64;
-type Range<const START: ValueType, const END: ValueType> = RiU64<START, END>;
+type Range<const START: u64, const END: u64> = RiU64<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    const POPULATION_TODAY: ValueType = 7_923_619_609;
+    const POPULATION_TODAY: u64 = 7_923_619_609;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    const YEAR_2000: ValueType = 6_143_493_823;
+    const YEAR_2000: u64 = 6_143_493_823;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    const YEAR_2100: ValueType = 10_875_393_719;
+    const YEAR_2100: u64 = 10_875_393_719;
     const EXPECTED: bool = true;
 
     // When
@@ -67,12 +66,12 @@ const fn const_range_contains_max_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    const POPULATION_TODAY: ValueType = 6_143_493_822;
+    const POPULATION_TODAY: u64 = 6_143_493_822;
     const EXPECTED: bool = false;
 
     // When
@@ -87,12 +86,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    const POPULATION_TODAY: ValueType = 10_875_393_720;
+    const POPULATION_TODAY: u64 = 10_875_393_720;
     const EXPECTED: bool = false;
 
     // When
@@ -107,12 +106,12 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    let population_today: ValueType = 7_923_619_609;
+    let population_today: u64 = 7_923_619_609;
     let expected = true;
 
     // When
@@ -125,12 +124,12 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    let year_2000: ValueType = 6_143_493_823;
+    let year_2000: u64 = 6_143_493_823;
     let expected = true;
 
     // When
@@ -143,12 +142,12 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    let year_2100: ValueType = 10_875_393_719;
+    let year_2100: u64 = 10_875_393_719;
     let expected = true;
 
     // When
@@ -161,12 +160,12 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    let population_today: ValueType = 6_143_493_822;
+    let population_today: u64 = 6_143_493_822;
     let expected = false;
 
     // When
@@ -179,12 +178,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    let population_today: ValueType = 10_875_393_720;
+    let population_today: u64 = 10_875_393_720;
     let expected = false;
 
     // When

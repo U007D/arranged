@@ -2,15 +2,14 @@ use super::*;
 use assert2::assert;
 use std::any::Any;
 
-type ValueType = i8;
-type Range<const START: ValueType, const END: ValueType> = RiI8<START, END>;
+type Range<const START: i8, const END: i8> = RiI8<START, END>;
 
 #[test]
 #[allow(clippy::assertions_on_constants, clippy::items_after_statements)]
 fn returns_expected_iterator() {
     // Given
-    const LEFT: ValueType = -1;
-    const RIGHT: ValueType = 1;
+    const LEFT: i8 = -1;
+    const RIGHT: i8 = 1;
 
     type Sut = Range<LEFT, RIGHT>;
 

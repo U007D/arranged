@@ -1,14 +1,13 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u8;
-type Range<const START: ValueType, const END: ValueType> = RiU8<START, END>;
+type Range<const START: u8, const END: u8> = RiU8<START, END>;
 
 #[test]
 fn non_empty_range_returns_expected_value() {
     // Given
-    const MIN: ValueType = 0;
-    const MAX: ValueType = 11;
+    const MIN: u8 = 0;
+    const MAX: u8 = 11;
 
     type Sut = Range<MIN, MAX>;
 

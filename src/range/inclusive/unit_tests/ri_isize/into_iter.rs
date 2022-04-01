@@ -2,15 +2,14 @@ use super::*;
 use assert2::assert;
 use std::any::Any;
 
-type ValueType = isize;
-type Range<const START: ValueType, const END: ValueType> = RiIsize<START, END>;
+type Range<const START: isize, const END: isize> = RiIsize<START, END>;
 
 #[test]
 #[allow(clippy::assertions_on_constants, clippy::items_after_statements)]
 fn returns_expected_iterator() {
     // Given
-    const MIN: ValueType = 42;
-    const MAX: ValueType = 84;
+    const MIN: isize = 42;
+    const MAX: isize = 84;
 
     type Sut = Range<MIN, MAX>;
 

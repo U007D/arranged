@@ -1,22 +1,21 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u64;
-type Range<const START: ValueType, const END: ValueType> = RiU64<START, END>;
+type Range<const START: u64, const END: u64> = RiU64<START, END>;
 
 #[test]
 #[allow(clippy::assertions_on_constants)]
 const fn returns_expected_value() {
     // Given
-    const WORLD_POPULATION_AT_START_OF_CENTURY: ValueType = 6_143_493_823;
-    const WORLD_POPULATION_AT_END_OF_CENTURY: ValueType = 10_875_393_719;
+    const WORLD_POPULATION_AT_START_OF_CENTURY: u64 = 6_143_493_823;
+    const WORLD_POPULATION_AT_END_OF_CENTURY: u64 = 10_875_393_719;
 
     type Sut = Range<WORLD_POPULATION_AT_START_OF_CENTURY, WORLD_POPULATION_AT_END_OF_CENTURY>;
 
-    const EXPECTED: ValueType = 10_875_393_719;
+    const EXPECTED: u64 = 10_875_393_719;
 
     // When
-    const RESULT: ValueType = Sut::end();
+    const RESULT: u64 = Sut::end();
 
     // Then
     // Uncomment below and set `assert` to failing condition to observe compile-time impact

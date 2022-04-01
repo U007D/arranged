@@ -1,18 +1,17 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u16;
-type Range<const START: ValueType, const END: ValueType> = RiU16<START, END>;
+type Range<const START: u16, const END: u16> = RiU16<START, END>;
 
 #[test]
 const fn const_range_contains_in_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    const CHILD_BONE_COUNT: ValueType = 242;
+    const CHILD_BONE_COUNT: u16 = 242;
     const EXPECTED: bool = true;
 
     // When
@@ -27,12 +26,12 @@ const fn const_range_contains_in_bounds_value() {
 #[test]
 const fn const_range_contains_min_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    const ADULT_BONE_COUNT: ValueType = 206;
+    const ADULT_BONE_COUNT: u16 = 206;
     const EXPECTED: bool = true;
 
     // When
@@ -47,12 +46,12 @@ const fn const_range_contains_min_bounds_value() {
 #[test]
 const fn const_range_contains_max_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    const INFANT_BONE_COUNT: ValueType = 270;
+    const INFANT_BONE_COUNT: u16 = 270;
     const EXPECTED: bool = true;
 
     // When
@@ -67,12 +66,12 @@ const fn const_range_contains_max_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    const TOO_LOW: ValueType = 205;
+    const TOO_LOW: u16 = 205;
     const EXPECTED: bool = false;
 
     // When
@@ -87,12 +86,12 @@ const fn const_range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 const fn const_range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    const TOO_HIGH: ValueType = 271;
+    const TOO_HIGH: u16 = 271;
     const EXPECTED: bool = false;
 
     // When
@@ -107,12 +106,12 @@ const fn const_range_does_not_contain_high_out_of_bounds_value() {
 #[test]
 fn range_contains_in_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    let child_bone_count: ValueType = 242;
+    let child_bone_count: u16 = 242;
     let expected = true;
 
     // When
@@ -125,12 +124,12 @@ fn range_contains_in_bounds_value() {
 #[test]
 fn range_contains_min_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    let adult_bone_count: ValueType = 206;
+    let adult_bone_count: u16 = 206;
     let expected = true;
 
     // When
@@ -143,12 +142,12 @@ fn range_contains_min_bounds_value() {
 #[test]
 fn range_contains_max_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    let infant_bone_count: ValueType = 270;
+    let infant_bone_count: u16 = 270;
     let expected = true;
 
     // When
@@ -161,12 +160,12 @@ fn range_contains_max_bounds_value() {
 #[test]
 fn range_does_not_contain_low_out_of_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    let too_low: ValueType = 205;
+    let too_low: u16 = 205;
     let expected = false;
 
     // When
@@ -179,12 +178,12 @@ fn range_does_not_contain_low_out_of_bounds_value() {
 #[test]
 fn range_does_not_contain_high_out_of_bounds_value() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
-    let too_high: ValueType = 271;
+    let too_high: u16 = 271;
     let expected = false;
 
     // When

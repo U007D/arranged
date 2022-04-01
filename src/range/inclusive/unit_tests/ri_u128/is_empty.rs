@@ -1,14 +1,13 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u128;
-type Range<const START: ValueType, const END: ValueType> = RiU128<START, END>;
+type Range<const START: u128, const END: u128> = RiU128<START, END>;
 
 #[test]
 fn non_empty_range_returns_expected_value() {
     // Given
-    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: ValueType = 100_000_000_000_000_000_000_000;
-    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: ValueType = 1_000_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND: u128 = 100_000_000_000_000_000_000_000;
+    const STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND: u128 = 1_000_000_000_000_000_000_000_000;
 
     type Sut = Range<STARS_IN_VISIBLE_UNIVERSE_LOWER_BOUND, STARS_IN_VISIBLE_UNIVERSE_UPPER_BOUND>;
 

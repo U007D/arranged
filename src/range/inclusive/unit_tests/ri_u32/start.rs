@@ -1,22 +1,21 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = u32;
-type Range<const START: ValueType, const END: ValueType> = RiU32<START, END>;
+type Range<const START: u32, const END: u32> = RiU32<START, END>;
 
 #[test]
 #[allow(clippy::assertions_on_constants)]
 const fn returns_expected_value() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: u32 = 350_000_000;
+    const MAX_CPU_HZ: u32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 
-    const EXPECTED: ValueType = 350_000_000;
+    const EXPECTED: u32 = 350_000_000;
 
     // When
-    const RESULT: ValueType = Sut::start();
+    const RESULT: u32 = Sut::start();
 
     // Then
     // Uncomment below and set `assert` to failing condition to observe compile-time impact

@@ -2,15 +2,14 @@ use super::*;
 use assert2::assert;
 use std::any::Any;
 
-type ValueType = i32;
-type Range<const START: ValueType, const END: ValueType> = RiI32<START, END>;
+type Range<const START: i32, const END: i32> = RiI32<START, END>;
 
 #[test]
 #[allow(clippy::assertions_on_constants, clippy::items_after_statements)]
 fn returns_expected_iterator() {
     // Given
-    const MIN_CPU_HZ: ValueType = 350_000_000;
-    const MAX_CPU_HZ: ValueType = 1_400_000_000;
+    const MIN_CPU_HZ: i32 = 350_000_000;
+    const MAX_CPU_HZ: i32 = 1_400_000_000;
 
     type Sut = Range<MIN_CPU_HZ, MAX_CPU_HZ>;
 

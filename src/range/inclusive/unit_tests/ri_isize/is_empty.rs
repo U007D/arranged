@@ -1,14 +1,13 @@
 use super::*;
 use assert2::assert;
 
-type ValueType = isize;
-type Range<const START: ValueType, const END: ValueType> = RiIsize<START, END>;
+type Range<const START: isize, const END: isize> = RiIsize<START, END>;
 
 #[test]
 fn non_empty_range_returns_expected_value() {
     // Given
-    const MIN: ValueType = 0;
-    const MAX: ValueType = 11;
+    const MIN: isize = 0;
+    const MAX: isize = 11;
 
     type Sut = Range<MIN, MAX>;
 

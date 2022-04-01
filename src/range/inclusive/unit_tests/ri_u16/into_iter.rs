@@ -2,15 +2,14 @@ use super::*;
 use assert2::assert;
 use std::any::Any;
 
-type ValueType = u16;
-type Range<const START: ValueType, const END: ValueType> = RiU16<START, END>;
+type Range<const START: u16, const END: u16> = RiU16<START, END>;
 
 #[test]
 #[allow(clippy::assertions_on_constants, clippy::items_after_statements)]
 fn returns_expected_iterator() {
     // Given
-    const MIN_BONES_IN_HUMAN_BODY: ValueType = 206;
-    const MAX_BONES_IN_HUMAN_BODY: ValueType = 270;
+    const MIN_BONES_IN_HUMAN_BODY: u16 = 206;
+    const MAX_BONES_IN_HUMAN_BODY: u16 = 270;
 
     type Sut = Range<MIN_BONES_IN_HUMAN_BODY, MAX_BONES_IN_HUMAN_BODY>;
 
