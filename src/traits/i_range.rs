@@ -1,16 +1,18 @@
-use crate::traits::ITyEq;
-use arith_traits::IWrapping;
-use num_traits::{Num, SaturatingSub};
 use std::ops::Sub;
+
+use arith_traits::IWrappingOps;
+use num_traits::{Num, SaturatingSub};
+
+use crate::traits::ITyEq;
 
 pub trait IRange {
     const INVARIANTS: () = ();
     type ValueType: Num + TryFrom<Self::WorkingValueType>;
-    type WorkingValueType: From<Self::ValueType> + Sub + IWrapping;
+    type WorkingValueType: From<Self::ValueType> + Sub + IWrappingOps;
 
     fn contains(value: &Self::ValueType) -> bool
-    where
-        Self: Sized;
+        where
+            Self: Sized;
 }
 
 pub trait IRangeFinite<TValue>: IRange + IRangeFrom + IRangeTo

@@ -1,16 +1,17 @@
+use arith_traits::IWrappingOps;
+use num::traits::{NumOps, One, Zero};
+
+use super::*;
+
 #[cfg(test)]
 mod unit_tests;
 
-use super::*;
-use arith_traits::IWrapping;
-use num::traits::{NumOps, One, Zero};
-
-impl<TRange> IWrapping for Ranged<TRange>
-where
-    Self: PartialOrd,
-    TRange: IRangeFrom + IRangeToInclusive,
-    TRange::ValueType: PartialOrd + IWrapping,
-    <TRange as IRange>::WorkingValueType: IWrapping<Output = <TRange as IRange>::WorkingValueType>
+impl<TRange> IWrappingOps for Ranged<TRange>
+    where
+        Self: PartialOrd,
+        TRange: IRangeFrom + IRangeToInclusive,
+        TRange::ValueType: PartialOrd + IWrappingOps,
+        <TRange as IRange>::WorkingValueType: IWrappingOps<Output=<TRange as IRange>::WorkingValueType>
         + Clone
         + NumOps<<TRange as IRange>::WorkingValueType, <TRange as IRange>::WorkingValueType>
         + One
