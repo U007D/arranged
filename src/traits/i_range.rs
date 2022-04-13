@@ -11,8 +11,8 @@ pub trait IRange {
     type WorkingValueType: From<Self::ValueType> + Sub + IWrappingOps;
 
     fn contains(value: &Self::ValueType) -> bool
-        where
-            Self: Sized;
+    where
+        Self: Sized;
 }
 
 pub trait IRangeFinite<TValue>: IRange + IRangeFrom + IRangeTo

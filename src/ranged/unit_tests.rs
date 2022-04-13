@@ -5,4 +5,4 @@ use super::*;
 
 mod from;
 mod wrapping_abs;
-
+mod wrapping_add;

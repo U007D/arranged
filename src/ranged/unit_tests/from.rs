@@ -1,5 +1,6 @@
-use super::*;
 use crate::RiU64;
+
+use super::*;
 
 #[allow(clippy::items_after_statements)]
 #[test]

@@ -1,5 +1,7 @@
+use std::ops::Add;
+
 use arith_traits::{IWrappingNonGenericOps, IWrappingOps};
-use num_traits::{NumOps, One, PrimInt, Zero};
+use num_traits::{NumOps, One, Zero};
 
 use crate::{
     consts::msg,
@@ -13,8 +15,8 @@ mod unit_tests;
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Ranged<TRange>(TRange::ValueType)
-    where
-        TRange: IRange;
+where
+    TRange: IRange;
 
 impl<TRange> Ranged<TRange>
 where
@@ -38,8 +40,8 @@ where
     #[must_use]
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn from(value: TRange::ValueType) -> Self
-    where
-        TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
+        where
+            TRange: ~ const IRange + ~ const IRangeFrom + ~ const IRangeTo, {
         #[allow(clippy::match_wild_err_arm)]
         // TODO: Replace with `const` `expect()` once it exists
         match Self::try_from(value) {
@@ -54,8 +56,8 @@ where
     /// Returns `Some(Self)` when `value` is within bounds or `None` otherwise.
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn try_from(value: TRange::ValueType) -> Result<Self>
-    where
-        TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
+        where
+            TRange: ~ const IRange + ~ const IRangeFrom + ~ const IRangeTo, {
         let _invariants = TRange::INVARIANTS;
 
         match TRange::contains(&value) {
@@ -83,6 +85,10 @@ where
     pub const unsafe fn unchecked_from(value: TRange::ValueType) -> Self { Self(value) }
 }
 
+// TODO: Separate `value()` from `start()` and `end()` methods, since `IRangeFrom` and `IRangeTo(Inclusive)` are not
+//       required for the former.
+// TODO: Separate `start()` and `end()` methods to accommodate `RangeTo` and `RangeFrom` types, respectively?
+// TODO: Reconcile `start()` and `end()` methods with `IMinMax` trait to eliminate redundancy
 impl<TRange> const IRanged<TRange> for Ranged<TRange>
 where
     TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo + ~const IRangeToInclusive,
@@ -98,19 +104,21 @@ where
 }
 
 impl<TRangeLhs, TRangeRhs> IWrappingOps<Ranged<TRangeRhs>> for Ranged<TRangeLhs>
-    where
-        Self: PartialOrd,
-        TRangeLhs: IRangeFrom + IRangeToInclusive,
-        TRangeLhs::ValueType: PartialOrd + IWrappingOps,
-        <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output=<TRangeLhs as IRange>::WorkingValueType>
+where
+    ErrInt: From<TRangeLhs::ValueType>,
+    Self: PartialOrd,
+    TRangeLhs: IRangeFrom + IRangeToInclusive,
+    TRangeLhs::ValueType: PartialOrd + IWrappingOps,
+    for<'a> &'a TRangeLhs::ValueType: Add<&'a TRangeRhs::ValueType, Output = TRangeLhs::ValueType>,
+    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
         + Clone
         + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
         + One
         + PartialOrd
         + Zero,
-        TRangeRhs: IRange + Into<TRangeLhs::ValueType> + PrimInt,
+    TRangeRhs: IRangeFrom + IRangeToInclusive,
 {
-    fn wrapping_add(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
+    fn wrapping_add(self, rhs: Ranged<TRangeRhs>) -> Self::Output { Self::from(self.value() + rhs.value()) }
 
     fn wrapping_div(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
 
@@ -126,11 +134,11 @@ impl<TRangeLhs, TRangeRhs> IWrappingOps<Ranged<TRangeRhs>> for Ranged<TRangeLhs>
 }
 
 impl<TRangeLhs> IWrappingNonGenericOps for Ranged<TRangeLhs>
-    where
-        Self: PartialOrd,
-        TRangeLhs: IRangeFrom + IRangeToInclusive,
-        TRangeLhs::ValueType: PartialOrd + IWrappingOps,
-        <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output=<TRangeLhs as IRange>::WorkingValueType>
+where
+    Self: PartialOrd,
+    TRangeLhs: IRangeFrom + IRangeToInclusive,
+    TRangeLhs::ValueType: PartialOrd + IWrappingOps,
+    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
         + Clone
         + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
         + One
@@ -180,11 +188,11 @@ impl<TRangeLhs> IWrappingNonGenericOps for Ranged<TRangeLhs>
                 // `end - start` + 1 (required for inclusive `Range`) _could_ overflow, so `ValueType` has been promoted
                 // to `WorkingValueType` to ensure overflow cannot happen in this case either.
                 #[allow(clippy::integer_arithmetic)]
-                    let range_len = end.clone() - start.clone() + <TRangeLhs as IRange>::WorkingValueType::one();
+                let range_len = end.clone() - start.clone() + <TRangeLhs as IRange>::WorkingValueType::one();
 
                 // `abs_value > end` per `match` arm ensures that `abs_value - end` cannot overflow
                 #[allow(clippy::integer_arithmetic)]
-                    let overflow_magnitude = abs_value - end;
+                let overflow_magnitude = abs_value - end;
 
                 let range_offset = overflow_magnitude % range_len;
                 start + range_offset
