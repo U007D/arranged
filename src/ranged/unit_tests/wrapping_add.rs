@@ -19,7 +19,7 @@ fn adding_non_wrapping_ranged_values_of_same_type_yields_expected_sum() {
 }
 
 #[test]
-fn adding_non_wrapping_ranged_values_of_different_type_yields_expected_sum() {
+fn adding_non_wrapping_ranged_values_of_different_types_yields_expected_sum() {
     // Given
     type OneToOneHundred = RiI8<1, 100>;
     type ZeroToNine = RiI8<0, 9>;
