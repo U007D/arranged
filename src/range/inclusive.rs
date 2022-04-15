@@ -1,12 +1,15 @@
+use std::mem::{size_of, transmute};
+
+use arith_traits::IMinMax;
+use num::BigInt;
+
+use into_iter_ri::IntoIterRi;
+
+use crate::traits::{IRange, IRangeFinite, IRangeFrom, IRangeIntoIterator, IRangeTo, IRangeToInclusive, ITyEq};
+
 mod into_iter_ri;
 #[cfg(test)]
 mod unit_tests;
-
-use crate::traits::{IRange, IRangeFinite, IRangeFrom, IRangeIntoIterator, IRangeTo, IRangeToInclusive, ITyEq};
-use arith_traits::IMinMax;
-use into_iter_ri::IntoIterRi;
-use num::{BigInt, BigUint};
-use std::mem::{size_of, transmute};
 
 macro_rules! impl_range_inclusive {
     ($($ValueType:ident $UnsignedValueType:ident $WorkingValueType:ident $RangeName:ident,)+) => {
@@ -120,10 +123,10 @@ impl_range_inclusive!(
     i64   u64   i128            RiI64,
     i128  u128  BigInt          RiI128,
     isize usize BigInt          RiIsize,
-    u8    u8    u8              RiU8,
-    u16   u16   u16             RiU16,
-    u32   u32   u32             RiU32,
-    u64   u64   u64             RiU64,
-    u128  u128  BigUint         RiU128,
-    usize usize BigUint         RiUsize,
+    u8    u8    i16             RiU8,
+    u16   u16   i32             RiU16,
+    u32   u32   i64             RiU32,
+    u64   u64   i128            RiU64,
+    u128  u128  BigInt          RiU128,
+    usize usize BigInt          RiUsize,
 );

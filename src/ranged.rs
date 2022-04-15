@@ -1,6 +1,9 @@
-use std::ops::Add;
+use std::{
+    fmt::Debug,
+    ops::{Add, Div, Sub},
+};
 
-use arith_traits::{IWrappingNonGenericOps, IWrappingOps};
+use arith_traits::{IMinMax, IWrappingNonGenericOps, IWrappingOps};
 use num_traits::{NumOps, One, Zero};
 
 use crate::{
@@ -104,21 +107,33 @@ where
 }
 
 impl<TRangeLhs, TRangeRhs> IWrappingOps<Ranged<TRangeRhs>> for Ranged<TRangeLhs>
-where
-    ErrInt: From<TRangeLhs::ValueType>,
-    Self: PartialOrd,
-    TRangeLhs: IRangeFrom + IRangeToInclusive,
-    TRangeLhs::ValueType: PartialOrd + IWrappingOps,
-    for<'a> &'a TRangeLhs::ValueType: Add<&'a TRangeRhs::ValueType, Output = TRangeLhs::ValueType>,
-    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
+    where
+        ErrInt: From<TRangeLhs::ValueType>,
+        Self: PartialOrd,
+        TRangeLhs: IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive + PartialOrd,
+        TRangeLhs::ValueType: Debug + PartialOrd + IWrappingOps,
+        TRangeLhs::WorkingValueType: Add<TRangeRhs::WorkingValueType, Output=TRangeLhs::WorkingValueType>
+        + Debug
+        + Div<Output=TRangeLhs::WorkingValueType>,
+        for<'a> &'a TRangeLhs::WorkingValueType: Add<&'a TRangeLhs::WorkingValueType, Output=TRangeLhs::WorkingValueType>
+        + Sub<Output=TRangeLhs::WorkingValueType>,
+        <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output=<TRangeLhs as IRange>::WorkingValueType>
         + Clone
         + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
         + One
         + PartialOrd
         + Zero,
-    TRangeRhs: IRangeFrom + IRangeToInclusive,
+        TRangeRhs: IRangeFrom + IRangeToInclusive,
 {
-    fn wrapping_add(self, rhs: Ranged<TRangeRhs>) -> Self::Output { Self::from(self.value() + rhs.value()) }
+    fn wrapping_add(self, rhs: Ranged<TRangeRhs>) -> Self::Output {
+        let (start, end) =
+            (TRangeLhs::WorkingValueType::from(TRangeLhs::MIN), TRangeLhs::WorkingValueType::from(TRangeLhs::MAX));
+        let span = &(&end - &start) + &<TRangeLhs as IRange>::WorkingValueType::one();
+        let sum = &(TRangeLhs::WorkingValueType::from(self.0) + TRangeRhs::WorkingValueType::from(rhs.0)) - &start;
+        let offset = sum % span;
+        let wrapped_sum = (offset + start).try_into().unwrap_or_else(|_err| unreachable!());
+        Self::from(wrapped_sum)
+    }
 
     fn wrapping_div(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
 
@@ -134,11 +149,11 @@ where
 }
 
 impl<TRangeLhs> IWrappingNonGenericOps for Ranged<TRangeLhs>
-where
-    Self: PartialOrd,
-    TRangeLhs: IRangeFrom + IRangeToInclusive,
-    TRangeLhs::ValueType: PartialOrd + IWrappingOps,
-    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
+    where
+        Self: PartialOrd,
+        TRangeLhs: IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive,
+        TRangeLhs::ValueType: PartialOrd + IWrappingOps,
+        <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output=<TRangeLhs as IRange>::WorkingValueType>
         + Clone
         + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
         + One
