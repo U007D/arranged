@@ -11,12 +11,10 @@ repository = "https://github.com/u007d/arranged"
 version = "0.1.0"
 
 [dependencies]
-arith_traits = { git = "https://github.com/u007d/arith_traits" }
-contracts = "0.6.2"
+arith_traits = { version = "0.2.0", git = "https://github.com/u007d/arith_traits" }
 num = "0.4.0"
-num-traits = { git = "https://github.com/u007d/num-traits", features = ["const_conversion"] }
-thiserror = "1.0.26"
-tokio = "1"
+num-traits = "0.2.14"
+thiserror = "1.0.30"
 
 [dev-dependencies]
 assert2 = "0.3.6"
