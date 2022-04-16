@@ -1,20 +1,20 @@
+mod i_min_max;
+#[cfg(test)]
+mod unit_tests;
+
 use std::{
     fmt::Debug,
-    ops::{Add, Div, Sub},
+    ops::{Add, Div},
 };
 
-use arith_traits::{IMinMax, IWrappingNonGenericOps, IWrappingOps};
+use arith_traits::{IMinMax, IUnaryWrappingOps, IWrappingOps};
 use num_traits::{NumOps, One, Zero};
 
 use crate::{
     consts::msg,
-    ErrInt,
-    Error, Result, traits::{IRange, IRanged, IRangeFrom, IRangeTo, IRangeToInclusive},
+    traits::{IRange, IRangeFrom, IRangeTo, IRangeToInclusive, IRanged},
+    ErrInt, Error, Result,
 };
-
-mod i_min_max;
-#[cfg(test)]
-mod unit_tests;
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Ranged<TRange>(TRange::ValueType)
@@ -43,8 +43,8 @@ where
     #[must_use]
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn from(value: TRange::ValueType) -> Self
-        where
-            TRange: ~ const IRange + ~ const IRangeFrom + ~ const IRangeTo, {
+    where
+        TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
         #[allow(clippy::match_wild_err_arm)]
         // TODO: Replace with `const` `expect()` once it exists
         match Self::try_from(value) {
@@ -59,8 +59,8 @@ where
     /// Returns `Some(Self)` when `value` is within bounds or `None` otherwise.
     #[allow(clippy::let_unit_value, clippy::no_effect_underscore_binding)]
     pub const fn try_from(value: TRange::ValueType) -> Result<Self>
-        where
-            TRange: ~ const IRange + ~ const IRangeFrom + ~ const IRangeTo, {
+    where
+        TRange: ~const IRange + ~const IRangeFrom + ~const IRangeTo, {
         let _invariants = TRange::INVARIANTS;
 
         match TRange::contains(&value) {
@@ -89,7 +89,7 @@ where
 }
 
 // TODO: Separate `value()` from `start()` and `end()` methods, since `IRangeFrom` and `IRangeTo(Inclusive)` are not
-//       required for the former.
+//       required for `value()`, but are for `start()` and `end()`, respectively.
 // TODO: Separate `start()` and `end()` methods to accommodate `RangeTo` and `RangeFrom` types, respectively?
 // TODO: Reconcile `start()` and `end()` methods with `IMinMax` trait to eliminate redundancy
 impl<TRange> const IRanged<TRange> for Ranged<TRange>
@@ -107,30 +107,30 @@ where
 }
 
 impl<TRangeLhs, TRangeRhs> IWrappingOps<Ranged<TRangeRhs>> for Ranged<TRangeLhs>
-    where
-        ErrInt: From<TRangeLhs::ValueType>,
-        Self: PartialOrd,
-        TRangeLhs: IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive + PartialOrd,
-        TRangeLhs::ValueType: Debug + PartialOrd + IWrappingOps,
-        TRangeLhs::WorkingValueType: Add<TRangeRhs::WorkingValueType, Output=TRangeLhs::WorkingValueType>
+where
+    ErrInt: From<TRangeLhs::ValueType>,
+    Self: PartialOrd,
+    TRangeLhs: Clone + IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive + PartialOrd,
+    TRangeLhs::ValueType: Debug + PartialOrd + IWrappingOps,
+    TRangeLhs::WorkingValueType: Add<TRangeRhs::WorkingValueType, Output = TRangeLhs::WorkingValueType>
         + Debug
-        + Div<Output=TRangeLhs::WorkingValueType>,
-        for<'a> &'a TRangeLhs::WorkingValueType: Add<&'a TRangeLhs::WorkingValueType, Output=TRangeLhs::WorkingValueType>
-        + Sub<Output=TRangeLhs::WorkingValueType>,
-        <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output=<TRangeLhs as IRange>::WorkingValueType>
+        + Div<Output = TRangeLhs::WorkingValueType>,
+    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
         + Clone
         + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
         + One
         + PartialOrd
         + Zero,
-        TRangeRhs: IRangeFrom + IRangeToInclusive,
+    TRangeRhs: IRangeFrom + IRangeToInclusive,
 {
+    // TODO: Determine why arithmetic below compiles without having to `#[allow(clippy::integer_arithmetic)]`
     fn wrapping_add(self, rhs: Ranged<TRangeRhs>) -> Self::Output {
         let (start, end) =
             (TRangeLhs::WorkingValueType::from(TRangeLhs::MIN), TRangeLhs::WorkingValueType::from(TRangeLhs::MAX));
-        let span = &(&end - &start) + &<TRangeLhs as IRange>::WorkingValueType::one();
-        let sum = &(TRangeLhs::WorkingValueType::from(self.0) + TRangeRhs::WorkingValueType::from(rhs.0)) - &start;
-        let offset = sum % span;
+        // For `Copy` types, `clone()` is `copy()`; for non-`Copy` types (uncommon), `Clone` bound permits participation
+        let span = end - start.clone() + <TRangeLhs as IRange>::WorkingValueType::one();
+        let sum = TRangeLhs::WorkingValueType::from(self.0) + TRangeRhs::WorkingValueType::from(rhs.0) - start.clone();
+        let offset = sum.wrapping_rem_euclid(span);
         let wrapped_sum = (offset + start).try_into().unwrap_or_else(|_err| unreachable!());
         Self::from(wrapped_sum)
     }
@@ -148,12 +148,12 @@ impl<TRangeLhs, TRangeRhs> IWrappingOps<Ranged<TRangeRhs>> for Ranged<TRangeLhs>
     fn wrapping_sub(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
 }
 
-impl<TRangeLhs> IWrappingNonGenericOps for Ranged<TRangeLhs>
-    where
-        Self: PartialOrd,
-        TRangeLhs: IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive,
-        TRangeLhs::ValueType: PartialOrd + IWrappingOps,
-        <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output=<TRangeLhs as IRange>::WorkingValueType>
+impl<TRangeLhs> IUnaryWrappingOps for Ranged<TRangeLhs>
+where
+    Self: PartialOrd,
+    TRangeLhs: Clone + IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive,
+    TRangeLhs::ValueType: PartialOrd + IWrappingOps,
+    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
         + Clone
         + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
         + One

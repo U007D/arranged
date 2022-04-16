@@ -1,4 +1,4 @@
-use arith_traits::IWrappingNonGenericOps;
+use arith_traits::IUnaryWrappingOps;
 use assert2::assert;
 
 use crate::{Ranged, RiI64, RiU64};

@@ -64,3 +64,19 @@ fn adding_wrapping_ranged_values_of_different_types_yields_expected_sum() {
     // Then
     assert!(result == expected);
 }
+
+#[test]
+fn adding_wrapping_positive_and_negative_ranged_values_of_different_types_yields_expected_sum() {
+    // Given
+    type ThirteenToNinetySeven = RiI8<13, 97>;
+    type NegativeTenToThree = RiI8<-10, 3>;
+    let sut = Ranged::<ThirteenToNinetySeven>::from(ThirteenToNinetySeven::MIN);
+    let b = Ranged::<NegativeTenToThree>::from(-1);
+    let expected = Ranged::<ThirteenToNinetySeven>::from(ThirteenToNinetySeven::MAX);
+
+    // When
+    let result = sut.wrapping_add(b);
+
+    // Then
+    assert!(result == expected);
+}
