@@ -4,7 +4,7 @@ mod unit_tests;
 
 use std::{
     fmt::Debug,
-    ops::{Add, Div},
+    ops::{Add, Div, Sub},
 };
 
 use arith_traits::{IMinMax, IUnaryWrappingOps, IWrappingOps};
@@ -31,7 +31,8 @@ where
     /// out of bounds, the compilation will fail.  If the code runs, it means the value passed in was within
     /// bounds and therefore the function signature is infallible (at runtime).  NOTE: Rust does not provide
     /// a way to *only* provide a (`const`) method at compile-time, thus, this function can also be called
-    /// with a runtime value.  In such a case, it will panic if the provided value is out of bounds.
+    /// with a runtime value.  In such a case, it will panic if the provided value is out of bounds.  When writing
+    /// panic-free code, use the `try_from()` constructor instead.
     ///
     /// # Returns
     /// `Self`, if `value` is within `TRange`'s range bounds.
@@ -113,17 +114,18 @@ where
     TRangeLhs: Clone + IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive + PartialOrd,
     TRangeLhs::ValueType: Debug + PartialOrd + IWrappingOps,
     TRangeLhs::WorkingValueType: Add<TRangeRhs::WorkingValueType, Output = TRangeLhs::WorkingValueType>
-        + Debug
-        + Div<Output = TRangeLhs::WorkingValueType>,
-    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
         + Clone
+        + Debug
+        + Div<Output = TRangeLhs::WorkingValueType>
+        + IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
         + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
         + One
         + PartialOrd
+        + Sub<TRangeRhs::WorkingValueType, Output = TRangeLhs::WorkingValueType>
         + Zero,
     TRangeRhs: IRangeFrom + IRangeToInclusive,
 {
-    // TODO: Determine why arithmetic below compiles without having to `#[allow(clippy::integer_arithmetic)]`
+    // TODO: Determine why arithmetic below compiles without having to `#[allow(clippy::integer_arithmetic)]` (!)
     fn wrapping_add(self, rhs: Ranged<TRangeRhs>) -> Self::Output {
         let (start, end) =
             (TRangeLhs::WorkingValueType::from(TRangeLhs::MIN), TRangeLhs::WorkingValueType::from(TRangeLhs::MAX));
@@ -145,7 +147,16 @@ where
 
     fn wrapping_rem_euclid(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
 
-    fn wrapping_sub(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
+    fn wrapping_sub(self, rhs: Ranged<TRangeRhs>) -> Self::Output {
+        let (start, end) =
+            (TRangeLhs::WorkingValueType::from(TRangeLhs::MIN), TRangeLhs::WorkingValueType::from(TRangeLhs::MAX));
+        // For `Copy` types, `clone()` is `copy()`; for non-`Copy` types (uncommon), `Clone` bound permits participation
+        let span = end - start.clone() + <TRangeLhs as IRange>::WorkingValueType::one();
+        let diff = TRangeLhs::WorkingValueType::from(self.0) - TRangeRhs::WorkingValueType::from(rhs.0) - start.clone();
+        let offset = diff.wrapping_rem_euclid(span);
+        let wrapped_sum = (start + offset).try_into().unwrap_or_else(|_err| unreachable!());
+        Self::from(wrapped_sum)
+    }
 }
 
 impl<TRangeLhs> IUnaryWrappingOps for Ranged<TRangeLhs>

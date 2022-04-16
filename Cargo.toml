@@ -3,17 +3,18 @@ authors = ["U007D <curly@humanenginuity.com>"]
 categories = []
 description = "Statically bounds-checked (machine-word-abstracting? TBD) ranged types as zero or low-runtime overhead abstractions providing safe (no unintentional overflow) arithmetic."
 edition = "2021"
-keywords = ["ranged-types", "ranges", "safe-arithmetic"]
+keywords = ["ranged-types", "ranges", "safe-arithmetic", "compile-time"]
 license = "MIT OR Apache-2.0"
 name = "arranged"
 readme = "README.md"
 repository = "https://github.com/u007d/arranged"
-version = "0.1.1"
+version = "0.1.2-pre"
 
 [dependencies]
 arith_traits = { version = "0.2.0", git = "https://github.com/u007d/arith_traits" }
 num = "0.4.0"
 num-traits = "0.2.14"
+#num-traits = { git = "https://github.com/u007d/num-traits", features = ["const_conversion"] }
 thiserror = "1.0.30"
 
 [dev-dependencies]
