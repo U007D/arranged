@@ -5,7 +5,7 @@
 Support for (machine-word-abstracting? TBD) ranged types as zero or low-runtime overhead abstractions using safe and
 conventional arithmetic wrappers, written in Rust.
 
-Currently at a pre-alpha experimental PoC stage of development--Can this concept even be implemented in Rust?  If yes, 
+Currently at a pre-alpha experimental (PoC stage) of development--Can this concept even be implemented in Rust?  If yes, 
 how efficient is the release code?  Is this *useful*, in the end?.
 
 ## Usage

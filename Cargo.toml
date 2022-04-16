@@ -1,14 +1,14 @@
 [package]
 authors = ["U007D <curly@humanenginuity.com>"]
 categories = []
-description = "<describe crate here>"
+description = "Statically bounds-checked (machine-word-abstracting? TBD) ranged types as zero or low-runtime overhead abstractions providing safe (no unintentional overflow) arithmetic."
 edition = "2021"
-keywords = []
+keywords = ["ranged-types", "ranges", "safe-arithmetic"]
 license = "MIT OR Apache-2.0"
 name = "arranged"
 readme = "README.md"
 repository = "https://github.com/u007d/arranged"
-version = "0.1.0"
+version = "0.1.1"
 
 [dependencies]
 arith_traits = { version = "0.2.0", git = "https://github.com/u007d/arith_traits" }
