@@ -12,7 +12,7 @@ mod into_iter_ri;
 mod unit_tests;
 
 macro_rules! impl_range_inclusive {
-    ($($ValueType:ident $UnsignedValueType:ident $WorkingValueType:ident $RangeName:ident,)+) => {
+    ($($ValueType:ident $UnsignedValueType:ident $WidenedValueType:ident $RangeName:ident,)+) => {
         $(
             #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
             pub struct $RangeName<const START: $ValueType, const END: $ValueType>;
@@ -46,7 +46,7 @@ macro_rules! impl_range_inclusive {
             impl<const START: $ValueType, const END: $ValueType> const IRange for $RangeName<START, END> {
                 const INVARIANTS: () = assert!(START <= END);
                 type ValueType = $ValueType;
-                type WorkingValueType = $WorkingValueType;
+                type WidenedValueType = $WidenedValueType;
 
                 fn contains(value: &Self::ValueType) -> bool { *value >= START && *value <= END }
             }

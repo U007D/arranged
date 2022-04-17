@@ -7,8 +7,8 @@ use crate::traits::ITyEq;
 
 pub trait IRange {
     const INVARIANTS: () = ();
-    type ValueType: Num + TryFrom<Self::WorkingValueType>;
-    type WorkingValueType: From<Self::ValueType> + Sub + IWrappingOps;
+    type ValueType: Num + TryFrom<Self::WidenedValueType>;
+    type WidenedValueType: From<Self::ValueType> + Sub + IWrappingOps;
 
     fn contains(value: &Self::ValueType) -> bool
     where

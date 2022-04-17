@@ -113,28 +113,23 @@ where
     Self: PartialOrd,
     TRangeLhs: Clone + IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive + PartialOrd,
     TRangeLhs::ValueType: Debug + PartialOrd + IWrappingOps,
-    TRangeLhs::WorkingValueType: Add<TRangeRhs::WorkingValueType, Output = TRangeLhs::WorkingValueType>
+    TRangeLhs::WidenedValueType: Add<TRangeRhs::WidenedValueType, Output = TRangeLhs::WidenedValueType>
         + Clone
         + Debug
-        + Div<Output = TRangeLhs::WorkingValueType>
-        + IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
-        + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
+        + Div<Output = TRangeLhs::WidenedValueType>
+        + IWrappingOps<Output = <TRangeLhs as IRange>::WidenedValueType>
+        + NumOps<<TRangeLhs as IRange>::WidenedValueType, <TRangeLhs as IRange>::WidenedValueType>
         + One
         + PartialOrd
-        + Sub<TRangeRhs::WorkingValueType, Output = TRangeLhs::WorkingValueType>
+        + Sub<TRangeRhs::WidenedValueType, Output = TRangeLhs::WidenedValueType>
         + Zero,
     TRangeRhs: IRangeFrom + IRangeToInclusive,
 {
     // TODO: Determine why arithmetic below compiles without having to `#[allow(clippy::integer_arithmetic)]` (!)
     fn wrapping_add(self, rhs: Ranged<TRangeRhs>) -> Self::Output {
-        let (start, end) =
-            (TRangeLhs::WorkingValueType::from(TRangeLhs::MIN), TRangeLhs::WorkingValueType::from(TRangeLhs::MAX));
-        // For `Copy` types, `clone()` is `copy()`; for non-`Copy` types (uncommon), `Clone` bound permits participation
-        let span = end - start.clone() + <TRangeLhs as IRange>::WorkingValueType::one();
-        let sum = TRangeLhs::WorkingValueType::from(self.0) + TRangeRhs::WorkingValueType::from(rhs.0) - start.clone();
-        let offset = sum.wrapping_rem_euclid(span);
-        let wrapped_sum = (offset + start).try_into().unwrap_or_else(|_err| unreachable!());
-        Self::from(wrapped_sum)
+        let sum = TRangeLhs::WidenedValueType::from(self.0) + TRangeRhs::WidenedValueType::from(rhs.0)
+            - TRangeLhs::WidenedValueType::from(TRangeLhs::MIN);
+        Self::from(wrapping_total::<TRangeLhs>(TRangeLhs::MIN, TRangeLhs::MAX, sum))
     }
 
     fn wrapping_div(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
@@ -148,14 +143,10 @@ where
     fn wrapping_rem_euclid(self, _rhs: Ranged<TRangeRhs>) -> Self::Output { todo!() }
 
     fn wrapping_sub(self, rhs: Ranged<TRangeRhs>) -> Self::Output {
-        let (start, end) =
-            (TRangeLhs::WorkingValueType::from(TRangeLhs::MIN), TRangeLhs::WorkingValueType::from(TRangeLhs::MAX));
-        // For `Copy` types, `clone()` is `copy()`; for non-`Copy` types (uncommon), `Clone` bound permits participation
-        let span = end - start.clone() + <TRangeLhs as IRange>::WorkingValueType::one();
-        let diff = TRangeLhs::WorkingValueType::from(self.0) - TRangeRhs::WorkingValueType::from(rhs.0) - start.clone();
-        let offset = diff.wrapping_rem_euclid(span);
-        let wrapped_sum = (start + offset).try_into().unwrap_or_else(|_err| unreachable!());
-        Self::from(wrapped_sum)
+        let diff = TRangeLhs::WidenedValueType::from(self.0)
+            - TRangeRhs::WidenedValueType::from(rhs.0)
+            - TRangeLhs::WidenedValueType::from(TRangeLhs::MIN);
+        Self::from(wrapping_total::<TRangeLhs>(TRangeLhs::MIN, TRangeLhs::MAX, diff))
     }
 }
 
@@ -164,9 +155,9 @@ where
     Self: PartialOrd,
     TRangeLhs: Clone + IMinMax<TRangeLhs::ValueType> + IRangeFrom + IRangeToInclusive,
     TRangeLhs::ValueType: PartialOrd + IWrappingOps,
-    <TRangeLhs as IRange>::WorkingValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WorkingValueType>
+    <TRangeLhs as IRange>::WidenedValueType: IWrappingOps<Output = <TRangeLhs as IRange>::WidenedValueType>
         + Clone
-        + NumOps<<TRangeLhs as IRange>::WorkingValueType, <TRangeLhs as IRange>::WorkingValueType>
+        + NumOps<<TRangeLhs as IRange>::WidenedValueType, <TRangeLhs as IRange>::WidenedValueType>
         + One
         + PartialOrd
         + Zero,
@@ -175,20 +166,20 @@ where
 
     fn wrapping_abs(self) -> Self::Output {
         let (start, end) = (
-            <TRangeLhs as IRange>::WorkingValueType::from(<TRangeLhs as IRangeFrom>::start()),
-            <TRangeLhs as IRange>::WorkingValueType::from(<TRangeLhs as IRangeTo>::end()),
+            <TRangeLhs as IRange>::WidenedValueType::from(<TRangeLhs as IRangeFrom>::start()),
+            <TRangeLhs as IRange>::WidenedValueType::from(<TRangeLhs as IRangeTo>::end()),
         );
 
-        // `WorkingValueType::from(self.0).abs()` cannot wrap, so `wrapping_abs()` is being used as
+        // `WidenedValueType::from(self.0).abs()` cannot wrap, so `wrapping_abs()` is being used as
         // "plain `abs`".  Note there is no convenient "plain `abs`" for `ValueType` as (`num::abs<T>(T)` is only
         // defined on `T: Signed` (i.e. `f32`, `f64` and `Rational`).
-        // TODO: Use `abs` or `wrapping_abs`. Attempts to use `WorkingValueType.wrapping_abs()` seem to enter infinite
+        // TODO: Use `abs` or `wrapping_abs`. Attempts to use `WidenedValueType.wrapping_abs()` seem to enter infinite
         //       recursive loops (resolving `IWrapping`?).
         let abs_value = {
-            let tmp_value = <TRangeLhs as IRange>::WorkingValueType::from(self.0);
-            match tmp_value >= <TRangeLhs as IRange>::WorkingValueType::zero() {
+            let tmp_value = <TRangeLhs as IRange>::WidenedValueType::from(self.0);
+            match tmp_value >= <TRangeLhs as IRange>::WidenedValueType::zero() {
                 true => tmp_value,
-                false => <TRangeLhs as IRange>::WorkingValueType::zero() - tmp_value,
+                false => <TRangeLhs as IRange>::WidenedValueType::zero() - tmp_value,
             }
         };
 
@@ -210,11 +201,11 @@ where
 
                 // Arithmetic below is safe because span of bounds of `ValueType`
                 // (`<TRange as IRangeTo>::end() - <TRange as IRangeTo>::start()`) cannot overflow `ValueType`,
-                // let alone `WorkingValueType`, whose size is at least `2 * size_of::<ValueType>()`.
+                // let alone `WidenedValueType`, whose size is at least `2 * size_of::<ValueType>()`.
                 // `end - start` + 1 (required for inclusive `Range`) _could_ overflow, so `ValueType` has been promoted
-                // to `WorkingValueType` to ensure overflow cannot happen in this case either.
+                // to `WidenedValueType` to ensure overflow cannot happen in this case either.
                 #[allow(clippy::integer_arithmetic)]
-                let range_len = end.clone() - start.clone() + <TRangeLhs as IRange>::WorkingValueType::one();
+                let range_len = end.clone() - start.clone() + <TRangeLhs as IRange>::WidenedValueType::one();
 
                 // `abs_value > end` per `match` arm ensures that `abs_value - end` cannot overflow
                 #[allow(clippy::integer_arithmetic)]
@@ -226,8 +217,8 @@ where
         };
 
         // `range_offset` calculation above guarantees `working_value` is within `TRange::start()..=TRange::end()`.
-        // TODO: Since `TryFrom` does not require the returned `Result`'s `E` to be `Error` or even `Debug`, determine
-        //       how to output `err` to aid debuggability
+        // TODO: Since `TryFrom/TryInto` do not require the returned `Result`'s `E` to be `Error` or even `Debug`,
+        //       determine how to output `err` to aid debuggability
         Self(working_value.try_into().unwrap_or_else(|_err| unreachable!()))
     }
 
@@ -238,4 +229,28 @@ where
     fn wrapping_shl(self, _rhs: u32) -> Self::Output { todo!() }
 
     fn wrapping_shr(self, _rhs: u32) -> Self::Output { todo!() }
+}
+
+#[allow(clippy::inline_always)]
+#[inline(always)]
+fn wrapping_total<TRange>(
+    start: TRange::ValueType,
+    end: TRange::ValueType,
+    total: TRange::WidenedValueType,
+) -> TRange::ValueType
+where
+    TRange: IRange,
+    TRange::WidenedValueType: Add<TRange::WidenedValueType, Output = TRange::WidenedValueType>
+        + Clone
+        + IUnaryWrappingOps<Output = TRange::WidenedValueType>
+        + One
+        + Sub<TRange::WidenedValueType, Output = TRange::WidenedValueType>, {
+    let (start, end) = (TRange::WidenedValueType::from(start), TRange::WidenedValueType::from(end));
+    // For `Copy` types, `clone()` is `memcpy::copy_*()`; for non-`Copy` types (uncommon), `Clone` bound permits
+    //     ranged type participation
+    let span = end - start.clone() + <TRange as IRange>::WidenedValueType::one();
+    let offset = total.wrapping_rem_euclid(span);
+    // TODO: Since `TryFrom/TryInto` do not require the returned `Result`'s `E` to be `Error` or even `Debug`, determine
+    //       how to output `err` to aid debuggability
+    (start + offset).try_into().unwrap_or_else(|_err| unreachable!())
 }
